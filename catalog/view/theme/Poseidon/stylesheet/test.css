@@ -1,0 +1,46 @@
+
+.imageSlide {
+	width: 100%;
+	height:350px !important;
+}
+
+.transbg1 {
+	background-color: rgba(0, 0, 0, 0.5);
+	border-radius: 12px;
+	padding:10px;
+}
+
+.transbg2 {
+	background-color: rgba(40, 43, 49, 0.27);
+	background: rgba(0, 0, 0, 0.27);
+}
+
+.carousel-caption {
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.hp-caption {
+	padding-top:0px !important;
+	padding-bottom:0px !important;
+	bottom:70px;
+}
+
+.transbg-lite {
+	background-color: rgba(172, 195, 235, 0.39);
+	background: rgba(172, 195, 235, 0.39);
+	border: 1px solid rgba(255, 255, 255, 0.4);
+	-webkit-box-shadow: 0px 0px 30px 0px rgba(50, 50, 50, 0.32);
+	-moz-box-shadow: 0px 0px 30px 0px rgba(50, 50, 50, 0.32);
+	box-shadow: 0px 0px 30px 0px rgba(50, 50, 50, 0.32);
+}
+
+.transbg-shadow-original {
+background-color: rgba(255, 255, 255, 0.2);
+background: rgba(255, 255, 255, 0.2);
+border: 1px solid rgba(255, 255, 255, 0.4);
+-webkit-box-shadow: 0px 0px 30px 0px rgba(50, 50, 50, 0.32);
+-moz-box-shadow: 0px 0px 30px 0px rgba(50, 50, 50, 0.32);
+box-shadow: 0px 0px 30px 0px rgba(50, 50, 50, 0.32);
+}
+
+

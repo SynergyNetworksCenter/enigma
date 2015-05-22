@@ -1,0 +1,21 @@
+#top-pages_wrapper > div.row, 
+#city-visits_wrapper > div.row, 
+#organic-search_wrapper > div.row,
+#sources_wrapper > div.row, 
+#referrals_wrapper > div.row, 
+#devices-used_wrapper > div.row, 
+#organic-referrer_wrapper > div.row {
+	padding:0px 0px;
+}
+
+.row.data_tables .tile .tile-header {
+padding: 15px 15px 0px 15px;
+}
+
+.row.data_tables .tile .tile-body {
+padding: 0px 15px 15px;
+}
+
+.table.table-custom > tbody > tr > th, .table.table-custom > tbody > tr > td {
+	padding-left: 5px;
+}

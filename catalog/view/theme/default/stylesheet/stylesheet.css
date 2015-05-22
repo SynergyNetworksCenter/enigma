@@ -1,0 +1,103 @@
+body.bg-synergy {
+  background-image: url(../images/noise.png), url(../image/background.jpg);
+  background-repeat: repeat, no-repeat;
+  background-position: left top;
+  background-size: auto, cover;
+}
+
+.dataTables_empty {
+	text-align: center;
+}
+
+.navbar .navbar-nav.quick-actions .dropdown .dropdown-menu.settings > li #color-schemes > li > a.bg-synergy,
+.navbar .navbar-nav.quick-actions .dropdown .dropdown-menu.settings > li #videobackgrounds > li > a.bg-synergy {
+  background: url(../image/background.jpg) center center no-repeat;
+}
+
+/* Table Link Color Overwrites */
+table.table th > a, table.table a.action-link {
+	color: #FF9731 !important;
+}
+
+a.table-url {
+	color:#08E857 !important;
+}
+
+/* Link Color Overwrites */
+
+/* Login style overwrites */
+.alert.alert-warning.alert-login {
+	margin-top: 25px !important;
+	margin-bottom:-20px !important;
+	border-left: 3px solid rgb(240, 102, 102);
+}
+
+
+/* Page Header Styles */
+.pageheader {
+	margin-bottom:25px;
+}
+
+
+/* Section Border Styles */
+.btop-orange {
+	border-top: 2px solid orange;
+}
+
+.btop-green {
+	border-top: 2px solid rgb(0, 187, 0);
+}
+
+.btop-red {
+	border-top: 2px solid rgb(244, 136, 111);
+}
+
+
+/* Button Styles */
+.btn {
+ font-weight: 500 !important;
+}
+
+.btn-cancel, .btn-delete {
+color: #fff;
+background-color: rgba(236, 100, 100, 0.67);
+border-color: #d43f3a;
+}
+
+.btn-edit {
+	color: rgb(73, 221, 73) !important;
+}
+
+.btn-save, .btn-insert {
+color: #fff;
+background-color: rgba(121, 196, 234, 0.5);
+border-color: #4cae4c;
+margin-right:10px;
+margin-left:10px;
+}
+
+.tile-widget .controls {
+display: inline-block;
+position: relative;
+right: 0px;
+top: 0px;
+font-size: 11px;
+z-index: 99;
+}
+
+/* Checkbox styles */
+.chk-center {
+	width:28px;
+	text-align: center;
+}
+
+/* Display all borders on tables  */
+div.tile-body table.table-bordered td,
+div.tile-body table.table-bordered th {
+	border-right: thin solid rgba(255, 255, 255, 0.2) !important;
+}
+
+
+.green-th th a:link {
+	color:#83F06B !important;
+}
