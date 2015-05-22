@@ -1,0 +1,4 @@
+[14-Oct-2014 16:43:18 UTC] PHP Fatal error:  Allowed memory size of 67108864 bytes exhausted (tried to allocate 7200 bytes) in /home/synergyweb/public_html/poseidonhomes.net/system/library/image.php on line 34
+[14-Oct-2014 16:43:18 UTC] PHP Fatal error:  Allowed memory size of 67108864 bytes exhausted (tried to allocate 28800 bytes) in /home/synergyweb/public_html/poseidonhomes.net/system/library/image.php on line 34
+[14-Oct-2014 16:44:37 UTC] PHP Fatal error:  Allowed memory size of 67108864 bytes exhausted (tried to allocate 7200 bytes) in /home/synergyweb/public_html/poseidonhomes.net/system/library/image.php on line 34
+
