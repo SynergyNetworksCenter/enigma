@@ -90,8 +90,8 @@ class ControllerCatalogUpload extends Controller {
 		$this->load->model('catalog/upload');
 
 		if (isset($this->request->post['selected']) && $this->validateDelete()) {
-			foreach ($this->request->post['selected'] as $upload_id) {
-				$this->model_catalog_upload->deleteUpload($upload_id);
+			foreach ($this->request->post['selected'] as $id) {
+				$this->model_catalog_upload->deleteUpload($id);
 			}
 
 			$this->session->data['success'] = $this->language->get('text_success');
@@ -142,27 +142,27 @@ class ControllerCatalogUpload extends Controller {
 		// Get Total Number of Uploads
 		$upload_total = $this->model_catalog_upload->getTotalUploads();
 
-		// Get all upload data to display
-		$results = $this->model_catalog_upload->getUploads();
+		// Get all website data to display
+		$results = $this->model_catalog_upload->getUploadDescriptions();
 
 		foreach ($results as $result) {
 			$action = array();
 
 			$action[] = array(
 				'text' => $this->language->get('text_edit'),
-				'href' => $this->url->link('catalog/upload/update', 'token=' . $this->session->data['token'] . '&upload_id=' . $result['upload_id'], 'SSL'),
+				'href' => $this->url->link('catalog/upload/update', 'token=' . $this->session->data['token'] . '&id=' . $result['id'], 'SSL'),
 				'class' => 'btn-edit'
 			);
 
 //			$website_name = array();
 //			$website_name = $this->model_catalog_website->getWebsite($result['website_id']);
 
-			$this->data['uploads'][] = array(
-				//'id' 			=> $result['id'],
+			$this->data['upload'][] = array(
+				'id' 			=> $result['id'],
 				'upload_id' => $result['upload_id'],
 				//'website' 	=> $website_name['site_name'],
 				'title'         => $result['title'],
-				//'status'       => ($result['status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled')),
+				'status'       => ($result['status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled')),
 				'date_added'   => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
 				'selected'     => isset($this->request->post['selected']) && in_array($result['id'], $this->request->post['selected']),
 				'action'       => $action
@@ -182,14 +182,14 @@ class ControllerCatalogUpload extends Controller {
 		$this->data['text_default'] = $this->language->get('text_default');
 
 		//Column Names for table
-//		$this->data['column_upload_id'] = $this->language->get('column_upload_id');
+		$this->data['column_upload_id'] = $this->language->get('column_upload_id');
 		$this->data['column_name'] = $this->language->get('column_name');
 		$this->data['column_title'] = $this->language->get('column_title');
 		$this->data['column_note'] = $this->language->get('column_note');
-//		$this->data['column_website'] = $this->language->get('column_website');
+	//	$this->data['column_website'] = $this->language->get('column_website');
 		$this->data['column_date_added'] = $this->language->get('column_date_added');
 		$this->data['column_action'] = $this->language->get('column_action');
-//		$this->data['column_status'] = $this->language->get('column_status');
+		$this->data['column_status'] = $this->language->get('column_status');
 
 		//Button Text
 		$this->data['button_insert'] = $this->language->get('button_insert');
@@ -241,13 +241,12 @@ class ControllerCatalogUpload extends Controller {
 
 		$this->data['entry_title'] = $this->language->get('entry_title');
 		$this->data['entry_note'] = $this->language->get('entry_note');
-		$this->data['entry_upload_id'] = $this->language->get('entry_upload_id');
+		$this->data['entry_upload_file'] = $this->language->get('entry_upload_file');
 //		$this->data['entry_status'] = $this->language->get('entry_status');
 //		$this->data['entry_assign'] = $this->language->get('entry_assign');
 
 		$this->data['button_save'] = $this->language->get('button_save');
 		$this->data['button_cancel'] = $this->language->get('button_cancel');
-		$this->data['button_upload'] = $this->language->get('button_upload');
 
 		if (isset($this->error['warning'])) {
 			$this->data['error_warning'] = $this->error['warning'];
@@ -268,9 +267,9 @@ class ControllerCatalogUpload extends Controller {
 		}
 
 		if (isset($this->error['upload_id'])) {
-			$this->data['error_upload_id'] = $this->error['upload_id'];
+			$this->data['error_upload_file'] = $this->error['upload_file'];
 		} else {
-			$this->data['error_upload_id'] = '';
+			$this->data['error_upload_file'] = '';
 		}
 
 
@@ -298,16 +297,16 @@ class ControllerCatalogUpload extends Controller {
 			// 'separator' => ' / '
 		);
 
-		if (!isset($this->request->get['upload_id'])) {
+		if (!isset($this->request->get['id'])) {
 			$this->data['action'] = $this->url->link('catalog/upload/insert', 'token=' . $this->session->data['token'], 'SSL');
 		} else {
-			$this->data['action'] = $this->url->link('catalog/upload/update', 'token=' . $this->session->data['token'] . '&upload_id=' . $this->request->get['upload_id'], 'SSL');
+			$this->data['action'] = $this->url->link('catalog/upload/update', 'token=' . $this->session->data['token'] . '&id=' . $this->request->get['id'], 'SSL');
 		}
 
 		$this->data['cancel'] = $this->url->link('catalog/upload', 'token=' . $this->session->data['token'], 'SSL');
 
-		if (isset($this->request->get['upload_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
-			$upload_info = $this->model_catalog_upload->getUploads($this->request->get['upload_id']);
+		if (isset($this->request->get['id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
+			$upload_info = $this->model_catalog_upload->getUploadAccountsAccount($this->request->get['id']);
 		}
 
 		if (isset($this->request->post['title'])) {
@@ -318,29 +317,29 @@ class ControllerCatalogUpload extends Controller {
 			$this->data['title'] = '';
 		}
 
-		//Websites --- need to change to bing [5-21-2015]  -- changed [5-22-2015]
-		$this->load->model('catalog/bing');
+		//Websites --- need to change to bing [5-21-2015]
+		$this->load->model('catalog/website');
 
-		if (isset($this->request->post['bing_id'])) {
-			$this->data['bing_id'] = $this->request->post['bing_id'];
+		if (isset($this->request->post['website_id'])) {
+			$this->data['website_id'] = $this->request->post['website_id'];
 		} elseif (!empty($upload_info)) {
-			$this->data['bing_id'] = $upload_info['bing_id'];
+			$this->data['website_id'] = $upload_info['website_id'];
 		} else {
-			$this->data['bing_id'] = 0;
+			$this->data['website_id'] = 0;
 		}
 
-		if (isset($this->request->post['bing'])) {
-			$this->data['bing'] = $this->request->post['bing'];
+		if (isset($this->request->post['website'])) {
+			$this->data['website'] = $this->request->post['website'];
 		} elseif (!empty($upload_info)) {
-			$bing_info = $this->model_catalog_bing->getBing($upload_info['bing_id']);
+			$website_info = $this->model_catalog_website->getWebsite($upload_info['website_id']);
 
-			if ($bing_info) {
-				$this->data['bing'] = $bing_info['title'];
+			if ($website_info) {
+				$this->data['website'] = $website_info['site_name'];
 			} else {
-				$this->data['bing'] = '';
+				$this->data['website'] = '';
 			}
 		} else {
-			$this->data['bing'] = '';
+			$this->data['website'] = '';
 		}
 
 		if (isset($this->request->post['upload_id'])) {
