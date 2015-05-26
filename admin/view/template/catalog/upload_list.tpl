@@ -64,7 +64,7 @@
                         <th class="sort-alpha"><?php echo $column_title; ?></th>
                         <!--th class="sort-alpha"><?php echo $column_website; ?></th-->
                         <th class="sort-alpha"><?php echo $column_note; ?></th>
-                        <th class="sort-amount text-center"><?php echo $column_status; ?></th>
+                        <!--th class="sort-amount text-center"><?php echo $column_status; ?></th-->
                         <th class="sort-numeric text-center"><?php echo $column_date_added; ?></th>
                         <th><?php echo $column_action; ?></th>
                       </tr>
