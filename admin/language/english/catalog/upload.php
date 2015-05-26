@@ -20,7 +20,7 @@ $_['column_status']         = 'Status';
 $_['column_action']         = 'Action';
 
 // Entry
-$_['entry_upload_file']  		= 'Upload File:';
+$_['entry_filename']  		= 'Upload File:';
 $_['entry_title']           = 'Notes:';
 $_['entry_note']            = 'Notes:';
 //$_['entry_assign']          = 'Assign to website:';

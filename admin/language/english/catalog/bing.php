@@ -1,5 +1,5 @@
-<?php 
-// Headings	
+<?php
+// Headings
 $_['heading_title']    		= 'Manage Bing Marketing';
 $_['page_title']     	   	= '<strong>Manage</strong> Bing Marketing';
 $_['section_title'] 		= 'Bing Accounts';
