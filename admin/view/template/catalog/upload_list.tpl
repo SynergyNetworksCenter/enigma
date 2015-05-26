@@ -61,7 +61,7 @@
                           </div>
                         </th>
 
-                        <th class="sort-alpha"><?php echo $column_upload_id; ?></th>
+                        <th class="sort-alpha"><?php echo $column_name; ?></th>
                         <!--th class="sort-alpha"><?php echo $column_website; ?></th-->
                         <th class="sort-alpha"><?php echo $column_note; ?></th>
                         <th class="sort-amount text-center"><?php echo $column_status; ?></th>
