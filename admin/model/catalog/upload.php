@@ -2,9 +2,7 @@
 class ModelCatalogUpload extends Model {
 	public function addUpload($data) {
 		$this->db->query("INSERT INTO " . DB_PREFIX . "upload
-			SET entry_upload_file = '" . $this->db->escape($data['entry_upload_file']) . "',
-			mask = '" . $this->db->escape($data['mask']) . "',
-			remaining = '" . (int)$data['remaining'] . "',
+			SET filename = '" . $this->db->escape($data['filename']) . "',
 			date_added = NOW()");
 
 		$upload_id = $this->db->getLastId();
@@ -13,7 +11,7 @@ class ModelCatalogUpload extends Model {
 			$this->db->query("INSERT INTO " . DB_PREFIX . "upload_description
 				SET upload_id = '" . (int)$upload_id . "',
 				language_id = '" . (int)$language_id . "',
-				name = '" . $this->db->escape($value['name']) . "'");
+				title = '" . $this->db->escape($value['title']) . "'");
 		}
 	}
 
@@ -31,9 +29,7 @@ class ModelCatalogUpload extends Model {
 		// }
 
 		$this->db->query("UPDATE " . DB_PREFIX . "upload
-			SET entry_upload_id = '" . $this->db->escape($data['entry_upload_id']) . "',
-			mask = '" . $this->db->escape($data['mask']) . "',
-			remaining = '" . (int)$data['remaining'] . "'
+			SET filename = '" . $this->db->escape($data['filename']) . "',
 			WHERE upload_id = '" . (int)$upload_id . "'");
 
 		$this->db->query("DELETE FROM " . DB_PREFIX . "upload_description WHERE upload_id = '" . (int)$upload_id . "'");
@@ -42,7 +38,7 @@ class ModelCatalogUpload extends Model {
 			$this->db->query("INSERT INTO " . DB_PREFIX . "upload_description
 				SET upload_id = '" . (int)$upload_id . "',
 				language_id = '" . (int)$language_id . "',
-				name = '" . $this->db->escape($value['name']) . "'");
+				title = '" . $this->db->escape($value['title']) . "'");
 		}
 	}
 
@@ -110,7 +106,7 @@ class ModelCatalogUpload extends Model {
 			WHERE upload_id = '" . (int)$upload_id . "'");
 
 		foreach ($query->rows as $result) {
-			$upload_description_data[$result['language_id']] = array('name' => $result['name']);
+			$upload_description_data[$result['language_id']] = array('title' => $result['title']);
 		}
 
 		return $upload_description_data;
