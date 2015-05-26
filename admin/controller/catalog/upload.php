@@ -142,7 +142,7 @@ class ControllerCatalogUpload extends Controller {
 		// Get Total Number of Uploads
 		$upload_total = $this->model_catalog_upload->getTotalUploads();
 
-		// Get all website data to display
+		// Get all upload data to display
 		$results = $this->model_catalog_upload->getUploadDescriptions();
 
 		foreach ($results as $result) {
@@ -158,13 +158,13 @@ class ControllerCatalogUpload extends Controller {
 //			$website_name = $this->model_catalog_website->getWebsite($result['website_id']);
 
 			$this->data['upload'][] = array(
-				'id' 			=> $result['id'],
+				//'id' 			=> $result['id'],
 				'upload_id' => $result['upload_id'],
 				//'website' 	=> $website_name['site_name'],
 				'title'         => $result['title'],
-				'status'       => ($result['status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled')),
+				//'status'       => ($result['status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled')),
 				'date_added'   => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
-				'selected'     => isset($this->request->post['selected']) && in_array($result['id'], $this->request->post['selected']),
+				'selected'     => isset($this->request->post['selected']) && in_array($result['upload_id'], $this->request->post['selected']),
 				'action'       => $action
 			);
 		}
@@ -176,20 +176,20 @@ class ControllerCatalogUpload extends Controller {
 
 		// Assign Text
 		$this->data['text_no_results'] = $this->language->get('text_no_results');
-		$this->data['text_enabled'] = $this->language->get('text_enabled');
-		$this->data['text_disabled'] = $this->language->get('text_disabled');
+//		$this->data['text_enabled'] = $this->language->get('text_enabled');
+//		$this->data['text_disabled'] = $this->language->get('text_disabled');
 		$this->data['text_select'] = $this->language->get('text_select');
 		$this->data['text_default'] = $this->language->get('text_default');
 
 		//Column Names for table
-		$this->data['column_upload_id'] = $this->language->get('column_upload_id');
+//		$this->data['column_upload_id'] = $this->language->get('column_upload_id');
 		$this->data['column_name'] = $this->language->get('column_name');
 		$this->data['column_title'] = $this->language->get('column_title');
 		$this->data['column_note'] = $this->language->get('column_note');
 	//	$this->data['column_website'] = $this->language->get('column_website');
 		$this->data['column_date_added'] = $this->language->get('column_date_added');
 		$this->data['column_action'] = $this->language->get('column_action');
-		$this->data['column_status'] = $this->language->get('column_status');
+//		$this->data['column_status'] = $this->language->get('column_status');
 
 		//Button Text
 		$this->data['button_insert'] = $this->language->get('button_insert');
@@ -235,13 +235,13 @@ class ControllerCatalogUpload extends Controller {
 		$this->data['section_title'] = $this->language->get('section_title');
 		$this->data['section_title2'] = $this->language->get('section_title2');
 
-		$this->data['text_enabled'] = $this->language->get('text_enabled');
-		$this->data['text_active'] = $this->language->get('text_active');
-		$this->data['text_disabled'] = $this->language->get('text_disabled');
+//		$this->data['text_enabled'] = $this->language->get('text_enabled');
+//		$this->data['text_active'] = $this->language->get('text_active');
+//		$this->data['text_disabled'] = $this->language->get('text_disabled');
 
 		$this->data['entry_title'] = $this->language->get('entry_title');
 		$this->data['entry_note'] = $this->language->get('entry_note');
-		$this->data['entry_upload_file'] = $this->language->get('entry_upload_file');
+		$this->data['entry_filename'] = $this->language->get('entry_filename');
 //		$this->data['entry_status'] = $this->language->get('entry_status');
 //		$this->data['entry_assign'] = $this->language->get('entry_assign');
 
@@ -255,11 +255,11 @@ class ControllerCatalogUpload extends Controller {
 			$this->data['error_warning'] = '';
 		}
 
-		// if (isset($this->error['sitename'])) {
-		// 	$this->data['error_sitename'] = $this->error['sitename'];
-		// } else {
-		// 	$this->data['error_sitename'] = '';
-		// }
+		 if (isset($this->error['filename'])) {
+		 	$this->data['error_filename'] = $this->error['filename'];
+		 } else {
+		 	$this->data['error_filename'] = '';
+		 }
 
 		if (isset($this->error['title'])) {
 			$this->data['error_title'] = $this->error['title'];
@@ -267,11 +267,12 @@ class ControllerCatalogUpload extends Controller {
 			$this->data['error_title'] = '';
 		}
 
-		if (isset($this->error['upload_id'])) {
-			$this->data['error_upload_file'] = $this->error['upload_file'];
+/*		if (isset($this->error['upload_id'])) {
+			$this->data['error_upload_id'] = $this->error['upload_id'];
 		} else {
-			$this->data['error_upload_file'] = '';
+			$this->data['error_upload_id'] = '';
 		}
+*/
 
 
 		//Declares array for Breadcrumbs
@@ -298,28 +299,51 @@ class ControllerCatalogUpload extends Controller {
 			// 'separator' => ' / '
 		);
 
-		if (!isset($this->request->get['id'])) {
+		if (!isset($this->request->get['upload_id'])) {
 			$this->data['action'] = $this->url->link('catalog/upload/insert', 'token=' . $this->session->data['token'], 'SSL');
 		} else {
-			$this->data['action'] = $this->url->link('catalog/upload/update', 'token=' . $this->session->data['token'] . '&id=' . $this->request->get['id'], 'SSL');
+			$this->data['action'] = $this->url->link('catalog/upload/update', 'token=' . $this->session->data['token'] . '&upload_id=' . $this->request->get['upload_id'], 'SSL');
 		}
 
 		$this->data['cancel'] = $this->url->link('catalog/upload', 'token=' . $this->session->data['token'], 'SSL');
 
-		if (isset($this->request->get['id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
-			$upload_info = $this->model_catalog_upload->getUploadAccountsAccount($this->request->get['id']);
+// Added from Download Controller - Jen [5/26/2015]
+		$this->load->model('localisation/language');
+
+		$this->data['languages'] = $this->model_localisation_language->getLanguages();
+// End added from download
+
+		if (isset($this->request->get['upload_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
+			$upload_info = $this->model_catalog_upload->getUpload($this->request->get['upload_id']);
 		}
 
-		if (isset($this->request->post['title'])) {
-			$this->data['title'] = $this->request->post['title'];
-		} elseif (!empty($upload_info)) {
-			$this->data['title'] = $upload_info['title'];
+//  Added from Download Controller 5-26-2015
+	//	$this->data['token'] = $this->session->data['token'];
+
+		if (isset($this->request->get['upload_id'])) {
+			$this->data['upload_id'] = $this->request->get['upload_id'];
 		} else {
-			$this->data['title'] = '';
+			$this->data['upload_id'] = 0;
+		}
+
+		if (isset($this->request->post['upload_description'])) {
+			$this->data['upload_description'] = $this->request->post['upload_description'];
+		} elseif (isset($this->request->get['upload_id'])) {
+			$this->data['upload_description'] = $this->model_catalog_upload->getUploadDescriptions($this->request->get['upload_id']);
+		} else {
+			$this->data['upload_description'] = array();
+		}
+
+		if (isset($this->request->post['filename'])) {
+			$this->data['filename'] = $this->request->post['filename'];
+		} elseif (!empty($download_info)) {
+			$this->data['filename'] = $download_info['filename'];
+		} else {
+			$this->data['filename'] = '';
 		}
 
 		//Websites --- need to change to bing [5-21-2015]
-		$this->load->model('catalog/website');
+/*		$this->load->model('catalog/website');
 
 		if (isset($this->request->post['website_id'])) {
 			$this->data['website_id'] = $this->request->post['website_id'];
@@ -358,6 +382,7 @@ class ControllerCatalogUpload extends Controller {
 		} else {
 			$this->data['status'] = 0;
 		}
+*/
 
 		$this->data['token'] = $this->session->data['token'];
 		$this->template = 'catalog/upload_form.tpl';
@@ -375,8 +400,30 @@ class ControllerCatalogUpload extends Controller {
 			$this->error['warning'] = $this->language->get('error_permission');
 		}
 
+		if (isset($this->request->get['upload_id'])) {
+			$this->data['upload_id'] = $this->request->get['upload_id'];
+		} else {
+			$this->data['upload_id'] = 0;
+		}
 
-		if(!(utf8_strlen($this->request->post['upload_id']) <= 0)) {
+		if (isset($this->request->post['upload_description'])) {
+			$this->data['upload_description'] = $this->request->post['upload_description'];
+		} elseif (isset($this->request->get['upload_id'])) {
+			$this->data['upload_description'] = $this->model_catalog_upload->getUploadDescriptions($this->request->get['upload_id']);
+		} else {
+			$this->data['upload_description'] = array();
+		}
+
+		if (isset($this->request->post['filename'])) {
+			$this->data['filename'] = $this->request->post['filename'];
+		} elseif (!empty($download_info)) {
+			$this->data['filename'] = $download_info['filename'];
+		} else {
+			$this->data['filename'] = '';
+		}
+
+
+/*		if(!(utf8_strlen($this->request->post['upload_description']) <= 0)) {
 
 			if ((utf8_strlen($this->request->post['upload_id']) < 7) || (utf8_strlen($this->request->post['upload_id']) > 10)) {
 				$this->error['upload_id'] = $this->language->get('error_upload_id');
@@ -384,6 +431,9 @@ class ControllerCatalogUpload extends Controller {
 		} else {
 			$this->error['upload_id'] = $this->language->get('error_upload_empty');
 		}
+*/
+
+
 
 		if (!$this->error) {
 			return true;
@@ -405,6 +455,83 @@ class ControllerCatalogUpload extends Controller {
 			return false;
 		}
 	} // End of Validate Delete()
+
+// Added from Download Controller [5-26-2015]
+	public function upload() {
+		$this->language->load('catalog/upload');
+
+		$json = array();
+
+		if (!$this->user->hasPermission('modify', 'catalog/upload')) {
+			$json['error'] = $this->language->get('error_permission');
+		}
+
+		if (!isset($json['error'])) {
+			if (!empty($this->request->files['file']['name'])) {
+				$filename = basename(html_entity_decode($this->request->files['file']['name'], ENT_QUOTES, 'UTF-8'));
+
+				if ((utf8_strlen($filename) < 3) || (utf8_strlen($filename) > 128)) {
+					$json['error'] = $this->language->get('error_filename');
+				}
+
+				// Allowed file extension types
+				$allowed = array();
+
+				$filetypes = explode("\n", $this->config->get('config_file_extension_allowed'));
+
+				foreach ($filetypes as $filetype) {
+					$allowed[] = trim($filetype);
+				}
+
+				if (!in_array(substr(strrchr($filename, '.'), 1), $allowed)) {
+					$json['error'] = $this->language->get('error_filetype');
+				}
+
+				// Allowed file mime types
+				$allowed = array();
+
+				$filetypes = explode("\n", $this->config->get('config_file_mime_allowed'));
+
+				foreach ($filetypes as $filetype) {
+					$allowed[] = trim($filetype);
+				}
+
+				if (!in_array($this->request->files['file']['type'], $allowed)) {
+					$json['error'] = $this->language->get('error_filetype');
+				}
+
+				// Check to see if any PHP files are trying to be uploaded
+				$content = file_get_contents($this->request->files['file']['tmp_name']);
+
+				if (preg_match('/\<\?php/i', $content)) {
+					$json['error'] = $this->language->get('error_filetype');
+				}
+
+				if ($this->request->files['file']['error'] != UPLOAD_ERR_OK) {
+					$json['error'] = $this->language->get('error_upload_' . $this->request->files['file']['error']);
+				}
+			} else {
+				$json['error'] = $this->language->get('error_upload');
+			}
+		}
+
+		if (!isset($json['error'])) {
+			if (is_uploaded_file($this->request->files['file']['tmp_name']) && file_exists($this->request->files['file']['tmp_name'])) {
+				$ext = md5(mt_rand());
+
+				//$json['filename'] = $filename . '.' . $ext;
+				$json['filename'] = $filename;
+				//$json['mask'] = $filename;
+
+				//move_uploaded_file($this->request->files['file']['tmp_name'], DIR_UPLOAD . $filename . '.' . $ext);
+				move_uploaded_file($this->request->files['file']['tmp_name'], DIR_UPLOAD . $filename);
+			}
+
+			$json['success'] = $this->language->get('text_upload');
+		}
+
+		$this->response->setOutput(json_encode($json));
+	}
 
 
 }
