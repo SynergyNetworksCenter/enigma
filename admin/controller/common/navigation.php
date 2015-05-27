@@ -63,7 +63,7 @@ class ControllerCommonNavigation extends Controller {
 			$this->data['g_analytics'] = $this->url->link('catalog/analytics', 'token=' . $this->session->data['token'], 'SSL');
 			$this->data['g_adwords'] = $this->url->link('catalog/adwords', 'token=' . $this->session->data['token'], 'SSL');
 			$this->data['b_marketing'] = $this->url->link('catalog/bing', 'token=' . $this->session->data['token'], 'SSL');
-			$this->data['m_upload'] = $this->url->link('catalog/upload', 'token=' . $this->session->data['token'], 'SSL');
+			$this->data['m_upload'] = $this->url->link('catalog/download', 'token=' . $this->session->data['token'], 'SSL');
 			//Email clients Links
 			$this->data['contact'] = $this->url->link('members/contact', 'token=' . $this->session->data['token'], 'SSL');
 			//Extension Links
