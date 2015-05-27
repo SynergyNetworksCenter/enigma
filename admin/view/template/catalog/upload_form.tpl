@@ -38,15 +38,24 @@
 
                 <div class="form-group">
                   <label class="col-md-3 control-label">
-                    <span class="required color-red">*</span> <?php echo $entry_upload_file; ?>
+                    <span class="required color-red">*</span> <?php echo $entry_title; ?>
                   </label>
-                  <div class="col-md-6">
-                    <input type="text" name="entry_upload_file" value="<?php echo $entry_upload_file; ?>" /> <a id="button-upload" class="btn btn-warning btn-xs"><?php echo $button_upload; ?></a>
-                    <?php if ($error_upload_file) { ?>
-                      <span class="error color-red"><?php echo $error_upload_file; ?></span>
+                  <div class="col-md-6"><? php foreach ($languages as $language) { ?>
+                    <input type="text" name="upload_description[<?php echo $language['language_id']; ?>][title]" value="<?php echo isset($upload_description[$language['language_id']]) ? $upload_description[$language['language_id']]['title'] : ''; ?>" />
+                    <?php if (isset($error_title[$language['language_id']])) { ?>
+                      <span class="error color-red"><?php echo $error_title[$language['language_id']]; ?></span>
+                    <?php } ?>
                     <?php } ?>
                   </div>
                 </div>
+
+                <div class="form-group">
+                  <label class="col-md-3 control-label">
+                    <span class="required color-red">*</span> <?php echo $entry_filename; ?>
+                    <input type="text" name="filename" value="<?php echo $filename; ?>" /> <a id="button-upload" class="btn btn-warning btn-xs"><?php echo $button_upload; ?></a>
+                      <?php if ($error_filename) { ?>
+                      <span class="error"><?php echo $error_filename; ?></span>
+                      <?php } ?>
 
                 <div class="form-group">
                   <label class="col-md-3 control-label"><?php echo $entry_note; ?></label>
