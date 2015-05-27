@@ -21,7 +21,7 @@ $_['column_action']         = 'Action';
 
 // Entry
 $_['entry_filename']  		= 'Upload File:';
-$_['entry_title']           = 'Notes:';
+$_['entry_title']           = 'Title:';
 $_['entry_note']            = 'Notes:';
 //$_['entry_assign']          = 'Assign to website:';
 //$_['entry_status']        	= 'Status:';

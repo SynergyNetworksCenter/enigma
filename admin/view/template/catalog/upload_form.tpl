@@ -40,27 +40,31 @@
                   <label class="col-md-3 control-label">
                     <span class="required color-red">*</span> <?php echo $entry_title; ?>
                   </label>
-                  <div class="col-md-6"><? php foreach ($languages as $language) { ?>
-                    <input type="text" name="upload_description[<?php echo $language['language_id']; ?>][title]" value="<?php echo isset($upload_description[$language['language_id']]) ? $upload_description[$language['language_id']]['title'] : ''; ?>" />
+                  <div class="col-md-6"><?php foreach ($languages as $language) { ?>
+                    <input class="form-control" type="text" name="upload_description[<?php echo $language['language_id']; ?>][title]" value="<?php echo isset($upload_description[$language['language_id']]) ? $upload_description[$language['language_id']]['title'] : ''; ?>" />
                     <?php if (isset($error_title[$language['language_id']])) { ?>
                       <span class="error color-red"><?php echo $error_title[$language['language_id']]; ?></span>
-                    <?php } ?>
-                    <?php } ?>
+                    <?php }} ?>
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label class="col-md-3 control-label">
                     <span class="required color-red">*</span> <?php echo $entry_filename; ?>
+                  </label>
+                  <div class="col-md-6">
                     <input type="text" name="filename" value="<?php echo $filename; ?>" /> <a id="button-upload" class="btn btn-warning btn-xs"><?php echo $button_upload; ?></a>
                       <?php if ($error_filename) { ?>
                       <span class="error"><?php echo $error_filename; ?></span>
                       <?php } ?>
+                  </div>
+                </div>
 
                 <div class="form-group">
                   <label class="col-md-3 control-label"><?php echo $entry_note; ?></label>
-                  <div class="col-md-6">
-                    <input class="form-control" type="text" name="title" value="<?php echo $title; ?>" />
+                  <div class="col-md-6"><?php foreach ($languages as $language) { ?>
+                    <input class="form-control" type="text" name="upload_description[<?php echo $language['language_id']; ?>][note]" value="<?php echo isset($upload_description[$language['language_id']]) ? $upload_description[$language['language_id']]['note'] : ''; ?>" />
+                    <?php } ?>
                   </div>
                 </div>
 

@@ -150,7 +150,7 @@ class ControllerCatalogUpload extends Controller {
 
 			$action[] = array(
 				'text' => $this->language->get('text_edit'),
-				'href' => $this->url->link('catalog/upload/update', 'token=' . $this->session->data['token'] . '&id=' . $result['id'], 'SSL'),
+				'href' => $this->url->link('catalog/upload/update', 'token=' . $this->session->data['token'] . '&upload_id=' . $result['upload_id'], 'SSL'),
 				'class' => 'btn-edit'
 			);
 
@@ -161,7 +161,8 @@ class ControllerCatalogUpload extends Controller {
 				//'id' 			=> $result['id'],
 				'upload_id' => $result['upload_id'],
 				//'website' 	=> $website_name['site_name'],
-				'title'         => $result['title'],
+				'title'        => $result['title'],
+				'note'				 => $result['note'],
 				//'status'       => ($result['status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled')),
 				'date_added'   => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
 				'selected'     => isset($this->request->post['selected']) && in_array($result['upload_id'], $this->request->post['selected']),
@@ -467,8 +468,8 @@ class ControllerCatalogUpload extends Controller {
 		}
 
 		if (!isset($json['error'])) {
-			if (!empty($this->request->files['file']['name'])) {
-				$filename = basename(html_entity_decode($this->request->files['file']['name'], ENT_QUOTES, 'UTF-8'));
+			if (!empty($this->request->files['file']['title'])) {
+				$filename = basename(html_entity_decode($this->request->files['file']['title'], ENT_QUOTES, 'UTF-8'));
 
 				if ((utf8_strlen($filename) < 3) || (utf8_strlen($filename) > 128)) {
 					$json['error'] = $this->language->get('error_filename');
