@@ -3,8 +3,6 @@ class ModelCatalogUpload extends Model {
 	public function addUpload($data) {
 		$this->db->query("INSERT INTO " . DB_PREFIX . "upload
 			SET filename = '" . $this->db->escape($data['filename']) . "',
-			mask = '" . $this->db->escape($data['mask']) . "',
-			remaining = '" . (int)$data['remaining'] . "',
 			date_added = NOW()");
 
 		$upload_id = $this->db->getLastId();
@@ -13,7 +11,8 @@ class ModelCatalogUpload extends Model {
 			$this->db->query("INSERT INTO " . DB_PREFIX . "upload_description
 				SET upload_id = '" . (int)$upload_id . "',
 				language_id = '" . (int)$language_id . "',
-				name = '" . $this->db->escape($value['name']) . "'");
+				title = '" . $this->db->escape($value['title']) . "','
+				note = '" . $this->db->escape($value['note']) . "'");
 		}
 	}
 
@@ -23,17 +22,15 @@ class ModelCatalogUpload extends Model {
 
 		// 	if ($upload_info) {
 		// 		$this->db->query("UPDATE " . DB_PREFIX . "order_upload
-		// 			SET `filename` = '" . $this->db->escape($data['filename']) . "',
+		// 			SET `entry_upload_id` = '" . $this->db->escape($data['entry_upload_id']) . "',
 		// 			mask = '" . $this->db->escape($data['mask']) . "',
 		// 			remaining = '" . (int)$data['remaining'] . "'
-		// 			WHERE `filename` = '" . $this->db->escape($upload_info['filename']) . "'");
+		// 			WHERE `entry_upload_id` = '" . $this->db->escape($upload_info['entry_upload_id']) . "'");
 		// 	}
 		// }
 
 		$this->db->query("UPDATE " . DB_PREFIX . "upload
 			SET filename = '" . $this->db->escape($data['filename']) . "',
-			mask = '" . $this->db->escape($data['mask']) . "',
-			remaining = '" . (int)$data['remaining'] . "'
 			WHERE upload_id = '" . (int)$upload_id . "'");
 
 		$this->db->query("DELETE FROM " . DB_PREFIX . "upload_description WHERE upload_id = '" . (int)$upload_id . "'");
@@ -42,7 +39,8 @@ class ModelCatalogUpload extends Model {
 			$this->db->query("INSERT INTO " . DB_PREFIX . "upload_description
 				SET upload_id = '" . (int)$upload_id . "',
 				language_id = '" . (int)$language_id . "',
-				name = '" . $this->db->escape($value['name']) . "'");
+				title = '" . $this->db->escape($value['title']) . "',
+				note = '" . $this->db->escape($value['note']) . "'");
 		}
 	}
 
@@ -65,19 +63,19 @@ class ModelCatalogUpload extends Model {
 		LEFT JOIN " . DB_PREFIX . "upload_description dd ON (d.upload_id = dd.upload_id)
 		WHERE dd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
 
-		if (!empty($data['filter_name'])) {
-			$sql .= " AND dd.name LIKE '" . $this->db->escape($data['filter_name']) . "%'";
+		if (!empty($data['filter_title'])) {
+			$sql .= " AND dd.title LIKE '" . $this->db->escape($data['filter_title']) . "%'";
 		}
 
 		$sort_data = array(
-			'dd.name',
-			'd.remaining'
+			'dd.title',
+			'd.note'
 		);
 
 		if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
 			$sql .= " ORDER BY " . $data['sort'];
 		} else {
-			$sql .= " ORDER BY dd.name";
+			$sql .= " ORDER BY dd.title";
 		}
 
 		if (isset($data['order']) && ($data['order'] == 'DESC')) {
@@ -110,7 +108,8 @@ class ModelCatalogUpload extends Model {
 			WHERE upload_id = '" . (int)$upload_id . "'");
 
 		foreach ($query->rows as $result) {
-			$upload_description_data[$result['language_id']] = array('name' => $result['name']);
+			$upload_description_data[$result['language_id']] = array('title' => $result['title']);
+			$upload_description_data[$result['language_id']] = array('note' => $result['note']);
 		}
 
 		return $upload_description_data;
