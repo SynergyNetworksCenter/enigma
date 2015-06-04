@@ -1,11 +1,12 @@
 <?php echo $header; ?>
 <?php echo $navigation; ?>
 
+<?php var_dump($keywords);?>
+
 <div class="jumbotron-bg">
   <div class="jumbotron container" style="margin-bottom:0px;">
       <h1><?php echo $intro; ?></h1>
       <p><?php echo $tagline; ?></p>
-      <p><a href="<?php echo $bing; ?>" class="btn btn-primary" role="button">View Bing Marketing</a></p>
   </div>
 </div><!-- end of jumbotron-bg -->
 
@@ -16,7 +17,7 @@
 		<div class="col-md-4">
 			<div class="row">
 
-        <!-- Clicks -->
+				<!-- Clicks -->
 				<div class="card-container col-md-12">
 				  <div class="card card-redbrown hover">
 				    <div class="front">
@@ -27,7 +28,7 @@
 
 				        <div class="media-body">
 				          <small>Clicks</small>
-				          <h2 class="media-heading animate-number" data-value="<?php echo $clicks['ga:adclicks']; ?>" data-animation-duration="1500">0</h2>
+				          <h2 class="media-heading animate-number" data-value="<?php echo $clicks['clicks']; ?>" data-animation-duration="1500">0</h2>
 				        </div>
 				      </div>
 				    </div> <!-- end of front -->
@@ -52,7 +53,7 @@
 
 				        <div class="media-body">
 				          <small>Impressions</small>
-				          <h2 class="media-heading animate-number" data-value="<?php echo $impressions['ga:impressions']; ?>" data-animation-duration="1500">0</h2>
+				          <h2 class="media-heading animate-number" data-value="<?php echo $impressions['impressions']; ?>" data-animation-duration="1500">0</h2>
 				        </div>
 				      </div>
 				    </div> <!-- end of front -->
@@ -77,7 +78,7 @@
 
 				        <div class="media-body">
 				          <small>CTR</small>
-				          <h2 class="media-heading animate-number" data-value="<?php echo round($ctr['ga:CTR'],2); ?>%" data-animation-duration="1500">0</h2>
+				          <h2 class="media-heading animate-number" data-value="<?php echo round($ctr['ctr'],2); ?>%" data-animation-duration="1500">0</h2>
 				        </div>
 				      </div>
 				    </div> <!-- end of front -->
@@ -102,7 +103,7 @@
 
 				        <div class="media-body">
 				          <small>Visits</small>
-				          <h2 class="media-heading animate-number" data-value="<?php echo $visits['ga:sessions']; ?>" data-animation-duration="1500">0</h2>
+				          <h2 class="media-heading animate-number" data-value="<?php echo $avg_position['avg_position']; ?>" data-animation-duration="1500">0</h2>
 				        </div>
 				      </div>
 				    </div> <!-- end of front -->
@@ -117,7 +118,7 @@
 				<!-- Visits -->
 
 				<!-- Conversions -->
-				<div class="card-container col-md-12">
+				<!--div class="card-container col-md-12">
 				  <div class="card card-redbrown hover">
 				    <div class="front">
 				      <div class="media">
@@ -130,20 +131,25 @@
 				          <h2 class="media-heading animate-number" data-value="<?php echo $conversions['ga:goalCompletionsAll']; ?>" data-animation-duration="1500">0</h2>
 				        </div>
 				      </div>
-				    </div> <!-- end of front -->
-				    <div class="back">
+				    </div> <!- end of front -->
+				    <!--div class="back">
 				      <a href="#">
 				        <i class="fa fa-bar-chart-o fa-4x"></i>
 				        <span>Check Summary</span>
 				      </a>
-				    </div> <!-- end of back -->
-				  </div> <!-- end of card-redbrown hover -->
-				</div> <!-- end of card-container -->
+				    </div> <!- end of back -->
+				  <!--/div> <!- end of card-redbrown hover -->
+				<!--/div> <!- end of card-container -->
 				<!-- Conversions -->
-			</div>
-		</div>
+
+			</div><!-- end row -->
+		</div><!-- end metric cards -->
+
+		<!-- Tables -->
 		<div class="col-md-8">
 			<div class="row">
+
+				<!-- Keywords -->
 				<div class="col-md-12">
 					<section class="tile color transparent-black btop-green">
 					  <div class="tile-header">
@@ -152,7 +158,7 @@
 
 					  <div class="tile-body">
 					    <div class="table-responsive">
-					      <table class="table table-datatable table-custom table-striped" id="keywords">
+					      <table class="table table-datatable table-custom table-striped" id="bing_id">
 					        <thead>
 					          <tr>
 					            <th class="sort-alpha">Keyword</th>
@@ -164,9 +170,7 @@
 					          <?php if ($keywords) { ?>
 					            <?php foreach ($keywords as $keyword) { ?>
 					              <tr>
-					                <td><?php echo $keyword[1]; ?></td>
-					                <td><?php echo $keyword[2]; ?></td>
-					                <td><?php echo $keyword[3]; ?></td>
+					                <td><?php echo $keyword; ?></td>
 					              </tr>
 					            <?php } ?>
 					          <?php } else { ?>
@@ -179,8 +183,9 @@
 					    </div> <!-- end of table-responsive -->
 					  </div> <!-- end of tile-body -->
 					</section> <!-- end of section -->
-				</div>
+				</div><!-- end of Keywords -->
 
+				<!-- Destinations -->
 				<div class="col-md-12">
 					<section class="tile color transparent-black btop-green">
 					  <div class="tile-header">
@@ -216,8 +221,9 @@
 					    </div> <!-- end of table-responsive -->
 					  </div> <!-- end of tile-body -->
 					</section> <!-- end of section -->
-				</div>
+				</div><!-- end of Destinations -->
 
+				<!-- Best Keywords -->
 				<div class="col-md-12">
 					<section class="tile color transparent-black btop-green">
 					  <div class="tile-header">
@@ -251,12 +257,12 @@
 					    </div> <!-- end of table-responsive -->
 					  </div> <!-- end of tile-body -->
 					</section> <!-- end of section -->
-				</div>
+				</div><!-- end of Best Keywords -->
 
 
 			</div>
-		</div>
-	</div> <!-- end of row -->
+		</div><!-- end of Tables -->
+	</div> <!-- end of container row -->
 
 
 

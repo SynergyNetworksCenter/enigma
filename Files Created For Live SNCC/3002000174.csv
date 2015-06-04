@@ -1,13 +1,4 @@
-﻿"Report Name: Client Center Import Report"
-"Report Time: April 2015,April 2015"
-"Time Zone: (GMT-05:00) Eastern Time (US & Canada)"
-"Last Completed Available Day: 5/1/2015 9:00:00 AM (GMT)"
-"Last Completed Available Hour: 5/1/2015 9:00:00 AM (GMT)"
-"Report Aggregation: Month"
-"Report Filter: "
-"Rows: 606"
-
-"Month","Campaign ID","Campaign name","Keyword","Clicks","Impressions","Avg. position","Average CPC","Spend","CTR (%)"
+"Month","Account ID","Account name","Keyword","Clicks","Impressions","Avg. position","Average CPC","Spend","CTR (%)"
 "April 2015","1189214","Synergy Networks","+search +engine +optimization","0","122","6.24","0.00","0.00","0.00"
 "April 2015","1189214","Synergy Networks","+web +design","5","136","5.27","0.83","4.15","3.68"
 "April 2015","1189214","Synergy Networks","bonita web design","0","1","1.00","0.00","0.00","0.00"
@@ -614,5 +605,3 @@
 "April 2015","36000983","GCO Eyes","vision exams","1","8","1.25","7.72","7.72","12.50"
 "April 2015","36000983","GCO Eyes","vision works orlando florida","0","7","1.71","0.00","0.00","0.00"
 "April 2015","36000983","GCO Eyes","vision works tampa florida","0","8","1.63","0.00","0.00","0.00"
-
-"Ã‚Â©2015 Microsoft Corporation. All rights reserved. "

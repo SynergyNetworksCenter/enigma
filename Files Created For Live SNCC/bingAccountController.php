@@ -1,15 +1,15 @@
 <?php
-class ControllerAccountMarketing extends Controller {
+class ControllerAccountBing extends Controller {
 	private $error = array();
 
 	public function index() {
 		if (!$this->member->isLogged()) {
-			$this->session->data['redirect'] = $this->url->link('account/marketing', '', 'SSL');
+			$this->session->data['redirect'] = $this->url->link('account/bing', '', 'SSL');
 
 			$this->redirect($this->url->link('account/login', '', 'SSL'));
 		}
 
-		$this->language->load('account/marketing');
+		$this->language->load('account/bing');
 
 		$this->document->setTitle($this->language->get('heading_title'));
 		// $this->document->addStyle('catalog/view/theme/default/css/clientStyles.css');
@@ -47,7 +47,7 @@ class ControllerAccountMarketing extends Controller {
 
 
 
-		$this->load->model('account/marketing');
+		$this->load->model('account/bing');
 		$this->load->model('account/member');
 
 		$this->data['breadcrumbs'] = array();
@@ -75,15 +75,14 @@ class ControllerAccountMarketing extends Controller {
 		$member_info = $this->model_account_member->getMember($this->member->getId());
 
 		$this->data['action'] = $this->url->link('account/marketing', '', 'SSL');
-		$this->data['bing'] = $this->url->link('account/bing', '', 'SSL');
 
 		$this->data['intro'] = sprintf($this->language->get('intro'), $member_info['site_name']);
 		$this->data['tagline'] = $this->language->get('tagline');
 
 		$this->data['member_info'] = $member_info;
 
-		if ($member_info['analytics_id']) {
-			$analytics_id = 'ga:' . $member_info['analytics_id'];
+		if ($member_info['bing_id']) {
+			$bing_id = $member_info['bing_id'];
 		} else {
 			$this->redirect($this->url->link('account/account', '', 'SSL'));
 		}
@@ -100,61 +99,54 @@ class ControllerAccountMarketing extends Controller {
 			$startDate = date('Y-m-d',strtotime('-1 month',strtotime($endDate)));
 		}
 
-		// Impresssions
-		$flipcards = array();
-		$flipcards['metrics'] = "ga:impressions";
-		$flipcardsParams = array('dimensions' => "ga:sourceMedium",'filters' => 'ga:sourceMedium==google / cpc');
-		$flip_card_results = $this->model_account_marketing->queryMarketing($analytics_id, $startDate, $endDate, $flipcards['metrics'], $flipcardsParams);
-		$this->data['impressions'] = $flip_card_results['totalsForAllResults'];
-
 		// Clicks
 		$flipcards = array();
-		$flipcards['metrics'] = "ga:adclicks";
-		$flipcardsParams = array('dimensions' => "ga:sourceMedium",'filters' => 'ga:sourceMedium==google / cpc');
-		$flip_card_results = $this->model_account_marketing->queryMarketing($analytics_id, $startDate, $endDate, $flipcards['metrics'], $flipcardsParams);
+		$flipcards['metrics'] = "clicks";
+		$flip_card_results = $this->model_account_bing->getBingAccountsData($bing_id, $startDate, $endDate, $flipcards['metrics'], $flipcardsParams);
 		$this->data['clicks'] = $flip_card_results['totalsForAllResults'];
+
+		// Impresssions
+		$flipcards = array();
+		$flipcards['metrics'] = "impressions";
+		$flip_card_results = $this->model_account_marketing->getBingAccountsData($analytics_id, $startDate, $endDate, $flipcards['metrics'], $flipcardsParams);
+		$this->data['impressions'] = $flip_card_results['totalsForAllResults'];
 
 		// CTR
 		$flipcards = array();
-		$flipcards['metrics'] = "ga:CTR";
-		$flipcardsParams = array('dimensions' => "ga:sourceMedium",'filters' => 'ga:sourceMedium==google / cpc');
-		$flip_card_results = $this->model_account_marketing->queryMarketing($analytics_id, $startDate, $endDate, $flipcards['metrics'], $flipcardsParams);
+		$flipcards['metrics'] = "ctr";
+		$flip_card_results = $this->model_account_marketing->getBingAccountsData($analytics_id, $startDate, $endDate, $flipcards['metrics'], $flipcardsParams);
 		$this->data['ctr'] = $flip_card_results['totalsForAllResults'];
 
-		// Visits
+		// Avg. Position
 		$flipcards = array();
-		$flipcards['metrics'] = "ga:sessions";
-		$flipcardsParams = array('dimensions' => "ga:sourceMedium",'filters' => 'ga:sourceMedium==google / cpc');
-		$flip_card_results = $this->model_account_marketing->queryMarketing($analytics_id, $startDate, $endDate, $flipcards['metrics'], $flipcardsParams);
-		$this->data['visits'] = $flip_card_results['totalsForAllResults'];
+		$flipcards['metrics'] = "avg_position";
+		$flip_card_results = $this->model_account_marketing->getBingAccountsData($analytics_id, $startDate, $endDate, $flipcards['metrics'], $flipcardsParams);
+		$this->data['avg_position'] = $flip_card_results['totalsForAllResults'];
 
-		// Conversions
-		$flipcards = array();
-		$flipcards['metrics'] = "ga:goalCompletionsAll";
-		$flipcardsParams = array('dimensions' => "ga:sourceMedium",'filters' => 'ga:sourceMedium==google / cpc');
-		$flip_card_results = $this->model_account_marketing->queryMarketing($analytics_id, $startDate, $endDate, $flipcards['metrics'], $flipcardsParams);
-		$this->data['conversions'] = $flip_card_results['totalsForAllResults'];
+		// // Conversions
+		// $flipcards = array();
+		// $flipcards['metrics'] = "ga:goalCompletionsAll";
+		// $flipcardsParams = array('dimensions' => "ga:sourceMedium",'filters' => 'ga:sourceMedium==google / cpc');
+		// $flip_card_results = $this->model_account_marketing->queryMarketing($analytics_id, $startDate, $endDate, $flipcards['metrics'], $flipcardsParams);
+		// $this->data['conversions'] = $flip_card_results['totalsForAllResults'];
 
 		// Keywords
 		$topPages = array();
-		$topPages['metrics'] = "ga:adClicks, ga:impressions";
-		$topPagesParams = array('dimensions' => "ga:sourceMedium, ga:keyword", 'filters' => 'ga:sourceMedium==google / cpc', 'sort' => '-ga:adClicks');
-		$topPagesResults = $this->model_account_marketing->queryMarketing($analytics_id, $startDate, $endDate, $topPages['metrics'], $topPagesParams);
+		$topPages['metrics'] = "clicks, impressions, avg_position";
+		$topPagesResults = $this->model_account_marketing->getBingAccountsData($analytics_id, $startDate, $endDate, $topPages['metrics'], $topPagesParams);
 		$this->data['keywords'] = $topPagesResults['rows'];
 
 		// Destination URLs
 		$topPages = array();
-		$topPages['metrics'] = "ga:pageviews, ga:bounceRate";
-		$topPagesParams = array('dimensions' => "ga:sourceMedium, ga:addestinationUrl", 'filters' => 'ga:sourceMedium==google / cpc', 'sort' => '-ga:pageviews');
-		$topPagesResults = $this->model_account_marketing->queryMarketing($analytics_id, $startDate, $endDate, $topPages['metrics'], $topPagesParams);
+		$topPages['metrics'] = "destination, clicks";
+		$topPagesResults = $this->model_account_marketing->getBingAccountsData($analytics_id, $startDate, $endDate, $topPages['metrics'], $topPagesParams);
 		$this->data['destinations'] = $topPagesResults['rows'];
 
-		// Best Keywords
-		$topPages = array();
-		$topPages['metrics'] = "ga:goalCompletionsAll";
-		$topPagesParams = array('dimensions' => "ga:sourceMedium, ga:keyword", 'filters' => 'ga:sourceMedium==google / cpc', 'sort' => '-ga:goalCompletionsAll');
-		$topPagesResults = $this->model_account_marketing->queryMarketing($analytics_id, $startDate, $endDate, $topPages['metrics'], $topPagesParams);
-		$this->data['best_keywords'] = $topPagesResults['rows'];
+		// // Best Keywords
+		// $topPages = array();
+		// $topPages['metrics'] = "ga:goalCompletionsAll";
+		// $topPagesResults = $this->model_account_marketing->getBingAccountsData($analytics_id, $startDate, $endDate, $topPages['metrics'], $topPagesParams);
+		// $this->data['best_keywords'] = $topPagesResults['rows'];
 
 		// Total Sessions
 		// $totalSessions = $flip_card_results['totalsForAllResults']['ga:impressions'];
@@ -182,21 +174,21 @@ class ControllerAccountMarketing extends Controller {
 		// $this->data['topPages'] = $topPagesResults['rows'];
 
 
-		//Sessions And Page View Timeline
-		$timelineStats = array();
-		$timelineEndDate = date('Y-m-d');
-	 	$timelineStartDate = date('Y-m-d',strtotime('-1 year',strtotime($timelineEndDate)));
-		$timelineStats['metrics'] = "ga:sessions, ga:pageviews";
-		$timelineParams = array('dimensions' => 'ga:month', 'sort' => '-ga:month');
-		$timelineStatsResults = $this->model_account_marketing->queryMarketing($analytics_id,  $timelineStartDate, $timelineEndDate, $timelineStats['metrics'], $timelineParams);
-		$this->data['timeline'] = $timelineStatsResults['rows'];
+		// //Sessions And Page View Timeline
+		// $timelineStats = array();
+		// $timelineEndDate = date('Y-m-d');
+		// 	$timelineStartDate = date('Y-m-d',strtotime('-1 year',strtotime($timelineEndDate)));
+		// $timelineStats['metrics'] = "ga:sessions, ga:pageviews";
+		// $timelineParams = array('dimensions' => 'ga:month', 'sort' => '-ga:month');
+		// $timelineStatsResults = $this->model_account_marketing->queryMarketing($analytics_id,  $timelineStartDate, $timelineEndDate, $timelineStats['metrics'], $timelineParams);
+		// $this->data['timeline'] = $timelineStatsResults['rows'];
 
 
 
-		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/account/marketing.tpl')) {
-			$this->template = $this->config->get('config_template') . '/template/account/marketing.tpl';
+		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/account/bing.tpl')) {
+			$this->template = $this->config->get('config_template') . '/template/account/bing.tpl';
 		} else {
-			$this->template = 'default/template/account/marketing.tpl';
+			$this->template = 'default/template/account/bing.tpl';
 		}
 
 		$this->children = array(

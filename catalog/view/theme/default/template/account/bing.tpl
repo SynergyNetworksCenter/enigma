@@ -1,11 +1,15 @@
 <?php echo $header; ?>
 <?php echo $navigation; ?>
 
+<?php //print(round($ctr,2));?>
+<?php //var_dump($clicks);?>
+<?php //var_dump($impressions);?>
+
 <div class="jumbotron-bg">
   <div class="jumbotron container" style="margin-bottom:0px;">
       <h1><?php echo $intro; ?></h1>
       <p><?php echo $tagline; ?></p>
-      <p><a href="<?php echo $bing; ?>" class="btn btn-primary" role="button">View Bing Marketing</a></p>
+      <p><a href="<?php echo $marketing; ?>" class="btn btn-primary" role="button">View Google Marketing</a></p>
   </div>
 </div><!-- end of jumbotron-bg -->
 
@@ -16,7 +20,7 @@
 		<div class="col-md-4">
 			<div class="row">
 
-        <!-- Clicks -->
+				<!-- Clicks -->
 				<div class="card-container col-md-12">
 				  <div class="card card-redbrown hover">
 				    <div class="front">
@@ -27,7 +31,7 @@
 
 				        <div class="media-body">
 				          <small>Clicks</small>
-				          <h2 class="media-heading animate-number" data-value="<?php echo $clicks['ga:adclicks']; ?>" data-animation-duration="1500">0</h2>
+				          <h2 class="media-heading animate-number" data-value="<?php echo $clicks; ?>" data-animation-duration="1500">0</h2>
 				        </div>
 				      </div>
 				    </div> <!-- end of front -->
@@ -52,7 +56,7 @@
 
 				        <div class="media-body">
 				          <small>Impressions</small>
-				          <h2 class="media-heading animate-number" data-value="<?php echo $impressions['ga:impressions']; ?>" data-animation-duration="1500">0</h2>
+				          <h2 class="media-heading animate-number" data-value="<?php echo $impressions; ?>" data-animation-duration="1500">0</h2>
 				        </div>
 				      </div>
 				    </div> <!-- end of front -->
@@ -66,7 +70,7 @@
 				</div> <!-- end of card-container -->
 				<!-- Impressions -->
 
-				<!-- CTR -->
+        <!-- CTR -->
 				<div class="card-container col-md-12">
 				  <div class="card card-redbrown hover">
 				    <div class="front">
@@ -76,8 +80,8 @@
 				        </span>
 
 				        <div class="media-body">
-				          <small>CTR</small>
-				          <h2 class="media-heading animate-number" data-value="<?php echo round($ctr['ga:CTR'],2); ?>%" data-animation-duration="1500">0</h2>
+				          <small>Impressions</small>
+				          <h2 class="media-heading animate-number" data-value="<?php echo round($ctr,2)."%"; ?>" data-animation-duration="1500">%</h2>
 				        </div>
 				      </div>
 				    </div> <!-- end of front -->
@@ -91,59 +95,14 @@
 				</div> <!-- end of card-container -->
 				<!-- CTR -->
 
-				<!-- Visits -->
-				<div class="card-container col-md-12">
-				  <div class="card card-redbrown hover">
-				    <div class="front">
-				      <div class="media">
-				        <span class="pull-left">
-				          <i class="fa fa-search media-object"></i>
-				        </span>
+			</div><!-- end row -->
+		</div><!-- end metric cards -->
 
-				        <div class="media-body">
-				          <small>Visits</small>
-				          <h2 class="media-heading animate-number" data-value="<?php echo $visits['ga:sessions']; ?>" data-animation-duration="1500">0</h2>
-				        </div>
-				      </div>
-				    </div> <!-- end of front -->
-				    <div class="back">
-				      <a href="#">
-				        <i class="fa fa-bar-chart-o fa-4x"></i>
-				        <span>Check Summary</span>
-				      </a>
-				    </div> <!-- end of back -->
-				  </div> <!-- end of card-redbrown hover -->
-				</div> <!-- end of card-container -->
-				<!-- Visits -->
-
-				<!-- Conversions -->
-				<div class="card-container col-md-12">
-				  <div class="card card-redbrown hover">
-				    <div class="front">
-				      <div class="media">
-				        <span class="pull-left">
-				          <i class="fa fa-search media-object"></i>
-				        </span>
-
-				        <div class="media-body">
-				          <small>Conversions</small>
-				          <h2 class="media-heading animate-number" data-value="<?php echo $conversions['ga:goalCompletionsAll']; ?>" data-animation-duration="1500">0</h2>
-				        </div>
-				      </div>
-				    </div> <!-- end of front -->
-				    <div class="back">
-				      <a href="#">
-				        <i class="fa fa-bar-chart-o fa-4x"></i>
-				        <span>Check Summary</span>
-				      </a>
-				    </div> <!-- end of back -->
-				  </div> <!-- end of card-redbrown hover -->
-				</div> <!-- end of card-container -->
-				<!-- Conversions -->
-			</div>
-		</div>
+		<!-- Tables -->
 		<div class="col-md-8">
 			<div class="row">
+
+				<!-- Keywords -->
 				<div class="col-md-12">
 					<section class="tile color transparent-black btop-green">
 					  <div class="tile-header">
@@ -152,7 +111,7 @@
 
 					  <div class="tile-body">
 					    <div class="table-responsive">
-					      <table class="table table-datatable table-custom table-striped" id="keywords">
+					      <table class="table table-datatable table-custom table-striped" id="bing_id">
 					        <thead>
 					          <tr>
 					            <th class="sort-alpha">Keyword</th>
@@ -164,9 +123,9 @@
 					          <?php if ($keywords) { ?>
 					            <?php foreach ($keywords as $keyword) { ?>
 					              <tr>
-					                <td><?php echo $keyword[1]; ?></td>
-					                <td><?php echo $keyword[2]; ?></td>
-					                <td><?php echo $keyword[3]; ?></td>
+					                <td><?php echo $keyword['keyword']; ?></td>
+                          <td><?php echo $keyword['clicks']; ?></td>
+                          <td><?php echo $keyword['impressions']; ?></td>
 					              </tr>
 					            <?php } ?>
 					          <?php } else { ?>
@@ -179,84 +138,13 @@
 					    </div> <!-- end of table-responsive -->
 					  </div> <!-- end of tile-body -->
 					</section> <!-- end of section -->
-				</div>
+				</div><!-- end of Keywords -->
 
-				<div class="col-md-12">
-					<section class="tile color transparent-black btop-green">
-					  <div class="tile-header">
-					    <h4 class="underline"><i class="fa fa-globe"></i> Destination URLs</h4>
-					  </div> <!-- end of tile-header -->
-
-					  <div class="tile-body">
-					    <div class="table-responsive">
-					      <table class="table table-datatable table-custom table-striped" id="destinations">
-					        <thead>
-					          <tr>
-					            <th class="sort-alpha">Destination URL</th>
-					            <th class="sort-numeric">Page Views</th>
-					            <th class="sort-numeric">Bounce Rate</th>
-					          </tr>
-					        </thead>
-					        <tbody>
-					          <?php if ($destinations) { ?>
-					            <?php foreach ($destinations as $destination) { ?>
-					              <tr>
-					                <td><?php echo $destination[1]; ?></td>
-					                <td><?php echo $destination[2]; ?></td>
-					                <td><?php echo round($destination[3], 2); ?>%</td>
-					              </tr>
-					            <?php } ?>
-					          <?php } else { ?>
-					            <tr>
-					              <td class="text-center" colspan="3"><?php echo $text_no_results; ?></td>
-					            </tr>
-					          <?php } ?>
-					        </tbody>
-					      </table>
-					    </div> <!-- end of table-responsive -->
-					  </div> <!-- end of tile-body -->
-					</section> <!-- end of section -->
-				</div>
-
-				<div class="col-md-12">
-					<section class="tile color transparent-black btop-green">
-					  <div class="tile-header">
-					    <h4 class="underline"><i class="fa fa-globe"></i> Best Keywords</h4>
-					  </div> <!-- end of tile-header -->
-
-					  <div class="tile-body">
-					    <div class="table-responsive">
-					      <table class="table table-datatable table-custom table-striped" id="bestkeywords">
-					        <thead>
-					          <tr>
-					            <th class="sort-alpha">Keyword</th>
-					            <th class="sort-numeric">Goal Completions</th>
-					          </tr>
-					        </thead>
-					        <tbody>
-					          <?php if ($best_keywords) { ?>
-					            <?php foreach ($best_keywords as $best_keyword) { ?>
-					              <tr>
-					                <td><?php echo $best_keyword[1]; ?></td>
-					                <td><?php echo $best_keyword[2]; ?></td>
-					              </tr>
-					            <?php } ?>
-					          <?php } else { ?>
-					            <tr>
-					              <td class="text-center" colspan="3"><?php echo $text_no_results; ?></td>
-					            </tr>
-					          <?php } ?>
-					        </tbody>
-					      </table>
-					    </div> <!-- end of table-responsive -->
-					  </div> <!-- end of tile-body -->
-					</section> <!-- end of section -->
-				</div>
 
 
 			</div>
-		</div>
-	</div> <!-- end of row -->
+		</div><!-- end of Tables -->
+	</div> <!-- end of container row -->
 
 
 

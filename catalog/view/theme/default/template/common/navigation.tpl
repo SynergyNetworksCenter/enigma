@@ -89,8 +89,8 @@
 							<li><a href="<?php echo $home; ?>">Home</a></li>
 							<li><a href="<?php echo $password; ?>">Password</a></li>
 							<li><a href="<?php echo $analytics; ?>">Analytics</a></li>
-							<li><a href="<?php echo $marketing; ?>">Marketing</a></li>
-							<!-- <li><a href="<?php //echo $bing; ?>">Bing</a></li> -->
+							<li><a href="<?php echo $marketing; ?>">Google Marketing</a></li>
+							<li><a href="<?php echo $bing; ?>">Bing Marketing</a></li>
 							<li><a href="<?php echo $logout; ?>">Logout</a></li>
 						</ul>
 					</li>

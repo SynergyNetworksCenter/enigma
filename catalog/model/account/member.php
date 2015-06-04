@@ -11,40 +11,40 @@ class ModelAccountMember extends Model {
 
 		$member_group_info = $this->model_account_member_group->getMemberGroup($member_group_id);
 
-		$this->db->query("INSERT INTO " . DB_PREFIX . "member 
-			SET site_id = '" . (int)$this->config->get('config_site_id') . "', 
-			firstname = '" . $this->db->escape($data['firstname']) . "', 
-			lastname = '" . $this->db->escape($data['lastname']) . "', 
-			email = '" . $this->db->escape($data['email']) . "', 
-			telephone = '" . $this->db->escape($data['telephone']) . "', 
-			fax = '" . $this->db->escape($data['fax']) . "', 
-			salt = '" . $this->db->escape($salt = substr(md5(uniqid(rand(), true)), 0, 9)) . "', 
-			password = '" . $this->db->escape(sha1($salt . sha1($salt . sha1($data['password'])))) . "', 
-			newsletter = '" . (isset($data['newsletter']) ? (int)$data['newsletter'] : 0) . "', 
-			member_group_id = '" . (int)$member_group_id . "', 
-			ip = '" . $this->db->escape($this->request->server['REMOTE_ADDR']) . "', 
-			status = '1', 
-			approved = '" . (int)!$member_group_info['approval'] . "', 
+		$this->db->query("INSERT INTO " . DB_PREFIX . "member
+			SET site_id = '" . (int)$this->config->get('config_site_id') . "',
+			firstname = '" . $this->db->escape($data['firstname']) . "',
+			lastname = '" . $this->db->escape($data['lastname']) . "',
+			email = '" . $this->db->escape($data['email']) . "',
+			telephone = '" . $this->db->escape($data['telephone']) . "',
+			fax = '" . $this->db->escape($data['fax']) . "',
+			salt = '" . $this->db->escape($salt = substr(md5(uniqid(rand(), true)), 0, 9)) . "',
+			password = '" . $this->db->escape(sha1($salt . sha1($salt . sha1($data['password'])))) . "',
+			newsletter = '" . (isset($data['newsletter']) ? (int)$data['newsletter'] : 0) . "',
+			member_group_id = '" . (int)$member_group_id . "',
+			ip = '" . $this->db->escape($this->request->server['REMOTE_ADDR']) . "',
+			status = '1',
+			approved = '" . (int)!$member_group_info['approval'] . "',
 			date_added = NOW()");
 
 		$member_id = $this->db->getLastId();
 
-		$this->db->query("INSERT INTO " . DB_PREFIX . "address 
-			SET member_id = '" . (int)$member_id . "', 
-			firstname = '" . $this->db->escape($data['firstname']) . "', 
-			lastname = '" . $this->db->escape($data['lastname']) . "', 
-			company = '" . $this->db->escape($data['company']) . "', 
-			address_1 = '" . $this->db->escape($data['address_1']) . "', 
-			address_2 = '" . $this->db->escape($data['address_2']) . "', 
-			city = '" . $this->db->escape($data['city']) . "', 
-			zipcode = '" . $this->db->escape($data['zipcode']) . "', 
-			country_id = '" . (int)$data['country_id'] . "', 
+		$this->db->query("INSERT INTO " . DB_PREFIX . "address
+			SET member_id = '" . (int)$member_id . "',
+			firstname = '" . $this->db->escape($data['firstname']) . "',
+			lastname = '" . $this->db->escape($data['lastname']) . "',
+			company = '" . $this->db->escape($data['company']) . "',
+			address_1 = '" . $this->db->escape($data['address_1']) . "',
+			address_2 = '" . $this->db->escape($data['address_2']) . "',
+			city = '" . $this->db->escape($data['city']) . "',
+			zipcode = '" . $this->db->escape($data['zipcode']) . "',
+			country_id = '" . (int)$data['country_id'] . "',
 			zone_id = '" . (int)$data['zone_id'] . "'");
 
 		$address_id = $this->db->getLastId();
 
-		$this->db->query("UPDATE " . DB_PREFIX . "member 
-			SET address_id = '" . (int)$address_id . "' 
+		$this->db->query("UPDATE " . DB_PREFIX . "member
+			SET address_id = '" . (int)$address_id . "'
 			WHERE member_id = '" . (int)$member_id . "'");
 
 		$this->language->load('mail/member');
@@ -71,7 +71,7 @@ class ModelAccountMember extends Model {
 		$mail->username = $this->config->get('config_smtp_username');
 		$mail->password = $this->config->get('config_smtp_password');
 		$mail->port = $this->config->get('config_smtp_port');
-		$mail->timeout = $this->config->get('config_smtp_timeout');				
+		$mail->timeout = $this->config->get('config_smtp_timeout');
 		$mail->setTo($data['email']);
 		$mail->setFrom($this->config->get('config_email'));
 		$mail->setSender($this->config->get('config_name'));
@@ -112,51 +112,52 @@ class ModelAccountMember extends Model {
 	}
 
 	public function editMember($data) {
-		$this->db->query("UPDATE " . DB_PREFIX . "member 
-			SET firstname = '" . $this->db->escape($data['firstname']) . "', 
-			lastname = '" . $this->db->escape($data['lastname']) . "', 
-			email = '" . $this->db->escape($data['email']) . "', 
-			telephone = '" . $this->db->escape($data['telephone']) . "', 
-			fax = '" . $this->db->escape($data['fax']) . "' 
+		$this->db->query("UPDATE " . DB_PREFIX . "member
+			SET firstname = '" . $this->db->escape($data['firstname']) . "',
+			lastname = '" . $this->db->escape($data['lastname']) . "',
+			email = '" . $this->db->escape($data['email']) . "',
+			telephone = '" . $this->db->escape($data['telephone']) . "',
+			fax = '" . $this->db->escape($data['fax']) . "'
 			WHERE member_id = '" . (int)$this->member->getId() . "'");
 	}
 
 	public function editPassword($email, $password) {
-		$this->db->query("UPDATE " . DB_PREFIX . "member 
-			SET salt = '" . $this->db->escape($salt = substr(md5(uniqid(rand(), true)), 0, 9)) . "', 
-			password = '" . $this->db->escape(sha1($salt . sha1($salt . sha1($password)))) . "' 
+		$this->db->query("UPDATE " . DB_PREFIX . "member
+			SET salt = '" . $this->db->escape($salt = substr(md5(uniqid(rand(), true)), 0, 9)) . "',
+			password = '" . $this->db->escape(sha1($salt . sha1($salt . sha1($password)))) . "'
 			WHERE LOWER(email) = '" . $this->db->escape(utf8_strtolower($email)) . "'");
 	}
 
 	public function editNewsletter($newsletter) {
-		$this->db->query("UPDATE " . DB_PREFIX . "member 
-			SET newsletter = '" . (int)$newsletter . "' 
+		$this->db->query("UPDATE " . DB_PREFIX . "member
+			SET newsletter = '" . (int)$newsletter . "'
 			WHERE member_id = '" . (int)$this->member->getId() . "'");
 	}
 
 	public function getMember($member_id) {
-		$query = $this->db->query("SELECT m.*, mw.website_id, w.site_name, a.analytics_id 
-			FROM " . DB_PREFIX . "member m 
-			LEFT JOIN sn_member_to_website mw ON (m.member_id = mw.member_id) 
-			LEFT JOIN sn_websites w ON (mw.website_id = w.website_id) 
+		$query = $this->db->query("SELECT m.*, mw.website_id, w.site_name, a.analytics_id, b.bing_id
+			FROM " . DB_PREFIX . "member m
+			LEFT JOIN sn_member_to_website mw ON (m.member_id = mw.member_id)
+			LEFT JOIN sn_websites w ON (mw.website_id = w.website_id)
 			LEFT JOIN sn_analytics a ON (mw.website_id = a.website_id)
+			LEFT JOIN sn_bing b ON (mw.website_id = b.website_id)
 			WHERE m.member_id = '" . (int)$member_id . "'");
 
 		return $query->row;
 	}
 
 	public function getMemberByEmail($email) {
-		$query = $this->db->query("SELECT * 
-			FROM " . DB_PREFIX . "member 
+		$query = $this->db->query("SELECT *
+			FROM " . DB_PREFIX . "member
 			WHERE LOWER(email) = '" . $this->db->escape(utf8_strtolower($email)) . "'");
 
 		return $query->row;
 	}
 
 	public function getMemberByToken($token) {
-		$query = $this->db->query("SELECT * 
-			FROM " . DB_PREFIX . "member 
-			WHERE token = '" . $this->db->escape($token) . "' 
+		$query = $this->db->query("SELECT *
+			FROM " . DB_PREFIX . "member
+			WHERE token = '" . $this->db->escape($token) . "'
 			AND token != ''");
 
 		$this->db->query("UPDATE " . DB_PREFIX . "member SET token = ''");
@@ -165,10 +166,10 @@ class ModelAccountMember extends Model {
 	}
 
 	public function getMembers($data = array()) {
-		$sql = "SELECT *, 
-		CONCAT(c.firstname, ' ', c.lastname) AS name, 
-		cg.name AS member_group 
-		FROM " . DB_PREFIX . "member c 
+		$sql = "SELECT *,
+		CONCAT(c.firstname, ' ', c.lastname) AS name,
+		cg.name AS member_group
+		FROM " . DB_PREFIX . "member c
 		LEFT JOIN " . DB_PREFIX . "member_group cg ON (c.member_group_id = cg.member_group_id) ";
 
 		$implode = array();
@@ -183,19 +184,19 @@ class ModelAccountMember extends Model {
 
 		if (isset($data['filter_member_group_id']) && !is_null($data['filter_member_group_id'])) {
 			$implode[] = "cg.member_group_id = '" . $this->db->escape($data['filter_member_group_id']) . "'";
-		}	
+		}
 
 		if (isset($data['filter_status']) && !is_null($data['filter_status'])) {
 			$implode[] = "c.status = '" . (int)$data['filter_status'] . "'";
-		}	
+		}
 
 		if (isset($data['filter_approved']) && !is_null($data['filter_approved'])) {
 			$implode[] = "c.approved = '" . (int)$data['filter_approved'] . "'";
-		}	
+		}
 
 		if (isset($data['filter_ip']) && !is_null($data['filter_ip'])) {
 			$implode[] = "c.member_id IN (SELECT member_id FROM " . DB_PREFIX . "member_ip WHERE ip = '" . $this->db->escape($data['filter_ip']) . "')";
-		}	
+		}
 
 		if (isset($data['filter_date_added']) && !is_null($data['filter_date_added'])) {
 			$implode[] = "DATE(c.date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
@@ -212,12 +213,12 @@ class ModelAccountMember extends Model {
 			'c.status',
 			'c.ip',
 			'c.date_added'
-		);	
+		);
 
 		if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
-			$sql .= " ORDER BY " . $data['sort'];	
+			$sql .= " ORDER BY " . $data['sort'];
 		} else {
-			$sql .= " ORDER BY name";	
+			$sql .= " ORDER BY name";
 		}
 
 		if (isset($data['order']) && ($data['order'] == 'DESC')) {
@@ -229,42 +230,42 @@ class ModelAccountMember extends Model {
 		if (isset($data['start']) || isset($data['limit'])) {
 			if ($data['start'] < 0) {
 				$data['start'] = 0;
-			}			
+			}
 
 			if ($data['limit'] < 1) {
 				$data['limit'] = 20;
-			}	
+			}
 
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
-		}		
+		}
 
 		$query = $this->db->query($sql);
 
-		return $query->rows;	
+		return $query->rows;
 	}
 
 	public function getTotalMembersByEmail($email) {
-		$query = $this->db->query("SELECT COUNT(*) AS total 
-			FROM " . DB_PREFIX . "member 
+		$query = $this->db->query("SELECT COUNT(*) AS total
+			FROM " . DB_PREFIX . "member
 			WHERE LOWER(email) = '" . $this->db->escape(utf8_strtolower($email)) . "'");
 
 		return $query->row['total'];
 	}
 
 	public function getIps($member_id) {
-		$query = $this->db->query("SELECT * 
-			FROM `" . DB_PREFIX . "member_ip` 
+		$query = $this->db->query("SELECT *
+			FROM `" . DB_PREFIX . "member_ip`
 			WHERE member_id = '" . (int)$member_id . "'");
 
 		return $query->rows;
-	}	
+	}
 
 	public function isBanIp($ip) {
-		$query = $this->db->query("SELECT * 
-			FROM `" . DB_PREFIX . "member_ban_ip` 
+		$query = $this->db->query("SELECT *
+			FROM `" . DB_PREFIX . "member_ban_ip`
 			WHERE ip = '" . $this->db->escape($ip) . "'");
 
 		return $query->num_rows;
-	}	
+	}
 }
 ?>

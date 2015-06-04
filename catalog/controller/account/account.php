@@ -1,5 +1,5 @@
-<?php 
-class ControllerAccountAccount extends Controller { 
+<?php
+class ControllerAccountAccount extends Controller {
 	public function index() {
 
 		if (!$this->member->isLogged()) {
@@ -11,7 +11,7 @@ class ControllerAccountAccount extends Controller {
 		$this->language->load('account/account');
 
 		$this->document->setTitle($this->language->get('heading_title'));
-		
+
 		$this->document->addStyle('catalog/view/theme/default/css/clientStyles.css');
 		$this->document->addStyle('catalog/view/theme/default/css/minimal-update.css');
 
@@ -48,15 +48,16 @@ class ControllerAccountAccount extends Controller {
 		$this->data['text_address'] = $this->language->get('text_address');
 		$this->data['text_download'] = $this->language->get('text_download');
 		$this->data['text_newsletter'] = $this->language->get('text_newsletter');
-		
+
 		$this->data['edit'] = $this->url->link('account/edit', '', 'SSL');
 		$this->data['password'] = $this->url->link('account/password', '', 'SSL');
 		$this->data['address'] = $this->url->link('account/address', '', 'SSL');
 		$this->data['download'] = $this->url->link('account/download', '', 'SSL');
 		$this->data['analytics'] = $this->url->link('account/analytics', '', 'SSL');
 		$this->data['marketing'] = $this->url->link('account/marketing', '', 'SSL');
+		$this->data['bing'] = $this->url->link('account/bing', '', 'SSL');
 		$this->data['newsletter'] = $this->url->link('account/newsletter', '', 'SSL');
-		
+
 
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/account/account.tpl')) {
 			$this->template = $this->config->get('config_template') . '/template/account/account.tpl';
@@ -71,7 +72,7 @@ class ControllerAccountAccount extends Controller {
 			'common/content_bottom',
 			'common/footer',
 			'common/navigation',
-			'common/header'		
+			'common/header'
 		);
 
 		$this->response->setOutput($this->render());

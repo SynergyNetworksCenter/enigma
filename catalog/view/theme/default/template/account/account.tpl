@@ -29,7 +29,8 @@
         <p>Take advantage of a marketing plan that will not only generate website traffic, but will also strive to ensure that the right kind of customer reaches your website. With an eye-catching ad and accurate, focused keywords, Synergy Networks can put your advertising dollars to work for you.</p>
 
         <p>Our team will generate reports and email them to you, giving you an idea of how effective your ad has been. Each month, we can work with you to further develop your ad - changing keywords, refining ad text, removing keywords that are not bringing in the desired type of traffic, and more.</p>
-        <p><a href="<?php echo $marketing; ?>" class="btn btn-primary" role="button">View Marketing</a></p>
+        <p><a href="<?php echo $marketing; ?>" class="btn btn-primary" role="button">View Google Marketing</a>
+          <a href="<?php echo $bing; ?>" class="btn btn-primary" role="button">View Bing Marketing</a></p>
 
       </div>
     </div>
@@ -45,5 +46,5 @@
 </div>
 
 
-  
-<?php echo $footer; ?> 
+
+<?php echo $footer; ?>
