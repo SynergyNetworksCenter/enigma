@@ -1,6 +1,6 @@
-<div id="wrap">
-	<div class="row">
-		<div class="navbar navbar-default navbar-fixed-top mm-fixed-top" role="navigation" id="navbar" style="background-color: rgba(41, 158, 179, 0.99);">
+
+		<!-- <div class="navbar navbar-default navbar-fixed-top mm-fixed-top" role="navigation" id="navbar" style=""> -->
+		<div class="navbar navbar-default" role="navigation" id="navbar" style="">
 			<!-- Branding -->
 
 				<a class="navbar-brand" href="<?php echo $home; ?>"><?php echo $portal; ?></a>

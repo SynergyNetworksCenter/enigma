@@ -2,7 +2,7 @@
 // draft version of ModelAccountBing which is copied from ModelCatalogBing
 class ModelAccountBing extends Model {
 
-	public function getUploadData($bing_id) {
+	public function getUploadData($bing_id, $date) {
     $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "bing b
     LEFT JOIN " . DB_PREFIX . "upload_data ud ON (b.bing_id = ud.account_id)
 		WHERE ud.account_id = '" .(int)$bing_id ."'");
@@ -10,28 +10,35 @@ class ModelAccountBing extends Model {
     return $query->row;
   }
 
-	public function getKeywords($bing_id) {
+	public function getKeywords($bing_id, $date) {
     $query = $this->db->query("SELECT keyword, clicks, impressions FROM " . DB_PREFIX . "upload_data ud
     LEFT JOIN " . DB_PREFIX . "bing b ON (ud.account_id = b.bing_id)
-		WHERE ud.account_id = '" . (int)$bing_id . "'");
+		WHERE ud.account_id = '" . (int)$bing_id . "' AND DATE_FORMAT(ud.month, '%Y %m') = DATE_FORMAT('"  . $this->db->escape($date) .  "','%Y %m')    ");
 
     return $query->rows;
   }
 
-	public function getTotalClicks($bing_id){
+	public function getTotalClicks($bing_id, $date){
 		$query = $this->db->query("SELECT SUM(clicks) as 'clicks' FROM " . DB_PREFIX . "upload_data ud
     LEFT JOIN " . DB_PREFIX . "bing b ON (ud.account_id = b.bing_id)
-		WHERE ud.account_id = '" . (int)$bing_id . "'");
+		WHERE ud.account_id = '" . (int)$bing_id . "' AND DATE_FORMAT(ud.month, '%Y %m') = DATE_FORMAT('"  . $this->db->escape($date) .  "','%Y %m')    ");
 
 		return $query->row['clicks'];
+
 	}
 
-	public function getTotalImpressions($bing_id){
+	public function getTotalImpressions($bing_id, $date){
 		$query = $this->db->query("SELECT SUM(impressions) as 'impressions' FROM " . DB_PREFIX . "upload_data ud
 		LEFT JOIN " . DB_PREFIX . "bing b ON (ud.account_id = b.bing_id)
-		WHERE ud.account_id = '" . (int)$bing_id . "'");
+		WHERE ud.account_id = '" . (int)$bing_id . "' AND DATE_FORMAT(ud.month, '%Y %m') = DATE_FORMAT('"  . $this->db->escape($date) .  "','%Y %m')    ");
 
 		return $query->row['impressions'];
+	}
+
+	public function getAvailableReportDates($bing_id) {
+		$query = $this->db->query("SELECT date_format(month,'%M %Y') as 'month' FROM " . DB_PREFIX . "upload_data WHERE account_id = '" .(int)$bing_id ."' GROUP BY month");
+
+		return $query->rows;
 	}
 
 

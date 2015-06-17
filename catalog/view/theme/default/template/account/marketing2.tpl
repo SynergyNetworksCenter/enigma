@@ -1,10 +1,5 @@
 <?php echo $header; ?>
 
-<?php if (isset($result)) { ?>
-	<pre>
-		<?php print_r($result); ?>
-	</pre>
-<?php } ?>	
 
 <div class="jumbotron-bg">
 <?php echo $navigation; ?>
@@ -22,7 +17,7 @@
         <form id="site-choose" class="form-inline" action="<?php echo $action_site_select; ?>" method="POST">
 				  <div class="form-group">
 				    <label for="analytics_select">Site: </label>
-				     <select class="form-control input-sm" name="analytics_id" id="analytics-select">
+				     <select name="analytics_id" id="analytics-select">
 				     	<?php foreach ($websites as $site){ ?>
 				     		<?php if($site['analytics_id'] == $analytics_id) {?>
 									<option value="<?php echo $site['analytics_id']; ?>" selected><?php echo $site['site_name']; ?></option>
@@ -39,11 +34,11 @@
 				<form id="date-choose" class="form-inline" action="<?php echo $action_date_select; ?>" method="POST">
 				  <div class="form-group">
 				    <label for="datepicker">Start Date: </label>
-				     <input type="text" name="startDate" value="<?php echo date('m/d/Y', strtotime($startDate)); ?>" class="form-control input-sm" id="datepicker"/>
+				     <input type="text" name="startDate" class="form-control input-sm" id="datepicker"/>
 				  </div>
 				  <div class="form-group">
 				    <label for="datepicker2">End Date: </label>
-				     <input type="text" name="endDate" value="<?php echo date('m/d/Y', strtotime($endDate)); ?>" class="form-control input-sm" id="datepicker2"/>
+				     <input type="text" name="endDate" class="form-control input-sm" id="datepicker2"/>
 				  </div>
 				  	<input type="hidden" name="analytics_id" value="<?php echo $analytics_id; ?>"/>
 				  <button type="submit" class="btn btn-default btn-xs">Submit</button>
@@ -58,29 +53,6 @@
 		<div id="displaying" class="col-md-12 displayDate text-left">
       Showing Results For: <?php echo date('F j, Y',strtotime($startDate)); ?> - <?php echo date('F j, Y',strtotime($endDate)); ?>
      </div>
-	</div>
-
-	<!-- Google Anlytics Polymer Elements -->
-		<google-signin
-			client-id="435077490050-cn4q93nb83ea759pdhkdll7iiga5cots@developer.gserviceaccount.com"
-			scopes="https://www.googleapis.com/auth/analytics.readonly">
-		</google-signin>
-	<!-- Google Anlytics Polymer Elements -->
-
-	<!-- Clicks vs Impressions Timeline Row -->
-	<div class="row">
-		<div class="col-md-12">
-			<section class="tile transparent">
-
-        		<div class="tile-header color transparent-black textured rounded-top-corners">
-          			<h1><strong>Clicks Vs</strong> Impresssions</h1> <small>Showing Results For: <?php echo date('m/d/Y', strtotime($timeline_startDate)) . ' - ' . date('m/d/Y', strtotime($timeline_endDate)); ?> </small>
-				</div>
-
-        		<div class="tile-widget color transparent-black textured">
-          			<div id="statistics-chart" class="chart statistics" style="height: 250px;"></div>
-        		</div>
-      		</section>
-		</div>
 	</div>
 
   <!-- Metrics Cards -->
@@ -382,6 +354,25 @@
       </section> <!-- end of section -->
     </div><!-- end of Automatic Placements -->
 
+    <!-- 12 Months Trend Chart -->
+    <div class="tile-header color transparent-black textured rounded-top-corners">
+      <h1><strong>Clicks vs. Impressions</strong> Chart</h1>
+      <div class="controls">
+        <a href="#" class="minimize"><i class="fa fa-chevron-down"></i></a>
+        <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
+        <a href="#" class="remove"><i class="fa fa-times"></i></a>
+      </div>
+    </div>
+    <!-- /tile header -->
+
+
+    <!-- tile widget -->
+    <div class="tile-widget color transparent-black textured">
+      <div id="statistics-chart" class="chart statistics" style="height: 250px;"></div>
+    </div>
+    <!-- /tile widget -->
+    <!-- end of 12 Months Trend Chart -->
+
   </div><!-- end of Tables -->
 
 </div><!-- end of container -->
@@ -390,6 +381,123 @@
 
 <script>
   $(function(){
+
+    // Clicks & Impressions Trend Line Chart
+    // Initialize flot chart
+    var d1 =[ [1, 715],
+          [2, 985],
+          [3, 1525],
+          [4, 1254],
+          [5, 1861],
+          [6, 2621],
+          [7, 1987],
+          [8, 2136],
+          [9, 2364],
+          [10, 2851],
+          [11, 1546],
+          [12, 2541]
+    ];
+    var d2 =[ [1, 463],
+              [2, 578],
+              [3, 327],
+              [4, 984],
+              [5, 1268],
+              [6, 1684],
+              [7, 1425],
+              [8, 1233],
+              [9, 1354],
+              [10, 1200],
+              [11, 1260],
+              [12, 1320]
+    ];
+    var months = ["January", "February", "March", "April", "May", "Juny", "July", "August", "September", "October", "November", "December"];
+
+    // flot chart generate
+    var plot = $.plotAnimator($("#statistics-chart"),
+      [
+        {
+          label: 'Clicks',
+          data: d1,
+          lines: {lineWidth:3},
+          shadowSize:0,
+          color: '#ffffff'
+        },
+        { label: "Impressions",
+          data: d2,
+          animator: {steps: 99, duration: 500, start:200, direction: "right"},
+          lines: {
+            fill: .15,
+            lineWidth: 0
+          },
+          color:['#ffffff']
+        },{
+          label: 'Sales',
+          data: d1,
+          points: { show: true, fill: true, radius:6,fillColor:"rgba(0,0,0,.5)",lineWidth:2 },
+          color: '#fff',
+          shadowSize:0
+        },
+        { label: "Visits",
+          data: d2,
+          points: { show: true, fill: true, radius:6,fillColor:"rgba(255,255,255,.2)",lineWidth:2 },
+          color: '#fff',
+          shadowSize:0
+        }
+      ],{
+
+      xaxis: {
+
+        tickLength: 0,
+        tickDecimals: 0,
+        min:1,
+        ticks: [[1,"JAN"], [2, "FEB"], [3, "MAR"], [4, "APR"], [5, "MAY"], [6, "JUN"], [7, "JUL"], [8, "AUG"], [9, "SEP"], [10, "OCT"], [11, "NOV"], [12, "DEC"]],
+
+        font :{
+          lineHeight: 24,
+          weight: "300",
+          color: "#ffffff",
+          size: 14
+        }
+      },
+
+      yaxis: {
+        ticks: 4,
+        tickDecimals: 0,
+        tickColor: "rgba(255,255,255,.3)",
+
+        font :{
+          lineHeight: 13,
+          weight: "300",
+          color: "#ffffff"
+        }
+      },
+
+      grid: {
+        borderWidth: {
+          top: 0,
+          right: 0,
+          bottom: 1,
+          left: 1
+        },
+        borderColor: 'rgba(255,255,255,.3)',
+        margin:0,
+        minBorderMargin:0,
+        labelMargin:20,
+        hoverable: true,
+        clickable: true,
+        mouseActiveRadius:6
+      },
+
+      legend: { show: false}
+    });
+
+    $(window).resize(function() {
+      // redraw the graph in the correctly sized div
+      plot.resize();
+      plot.setupGrid();
+      plot.draw();
+    });
+
 
       // Add custom class to pagination div
       $.fn.dataTableExt.oStdClasses.sPaging = 'dataTables_paginate paging_bootstrap paging_custom';
@@ -462,29 +570,29 @@
       });
       <?php } ?>
 
-      // Top Performing Keywords
-      <?php if($best_results == true){ ?>
-      var oTable03 = $('#bestkeywords').dataTable({
-      	'bFilter': false,
-      	"iDisplayLength": 5,
-      	"aLengthMenu": [5,10],
-        "sDom":
-          "R<'row'<'col-md-6'l><'col-md-6'f>r>"+
-          "t"+
-          "<'row'<'col-md-4 sm-center'i><'col-md-4'><'col-md-4 text-right sm-center'p>>",
-        "oLanguage": {
-          "sSearch": ""
-        },
-        "aaSorting": [ [1,'desc'] ],
-        "aoColumns": [
-          null,
-          null
-        ],
-        "fnInitComplete": function(oSettings, json) {
-          console.log('complete');
-        }
-      });
-      <?php } ?>
+      // // Top Performing Keywords
+      // <?php if($best_results == true){ ?>
+      // var oTable03 = $('#bestkeywords').dataTable({
+      // 	'bFilter': false,
+      // 	"iDisplayLength": 5,
+      // 	"aLengthMenu": [5,10],
+      //   "sDom":
+      //     "R<'row'<'col-md-6'l><'col-md-6'f>r>"+
+      //     "t"+
+      //     "<'row'<'col-md-4 sm-center'i><'col-md-4'><'col-md-4 text-right sm-center'p>>",
+      //   "oLanguage": {
+      //     "sSearch": ""
+      //   },
+      //   "aaSorting": [ [1,'desc'] ],
+      //   "aoColumns": [
+      //     null,
+      //     null
+      //   ],
+      //   "fnInitComplete": function(oSettings, json) {
+      //     console.log('complete');
+      //   }
+      // });
+      // <?php } ?>
 
       // Mandual Placements
       <?php if($placement_results == true){ ?>
@@ -551,195 +659,4 @@ $(function() {
     		$( "#datepicker" ).datepicker();
     		$( "#datepicker2" ).datepicker();
   		});
-</script>
-<script>
-	<?php $clicks_count = count($clicks_line); $x = 1; ?>
-	// Clicks & Impressions
-	//Initialize flot chart
-       var d1 =[
-		<?php foreach ($clicks_line as $line_plot) {
-			if ($x < $clicks_count ) {
-				echo '[' . $line_plot[0] . ',' . $line_plot[2] . '],';
-				$x++;
-			} else {
-				echo '[' . $line_plot[0] . ',' . $line_plot[2] . ']';
-			}
-		} ?>
-
-       ];
-
-//	var d1 =[
-//		[1, 715],
-//		[2, 985],
-//		[3, 1525],
-//		[4, 1254],
-//		[5, 1861],
-//		[6, 2621],
-//		[7, 1987],
-//		[8, 2136],
-//		[9, 2364],
-//		[10, 2851],
-//		[11, 1546],
-//		[12, 2541]
-//	];
-	<?php $impressions_count = count($impressions_line); $y = 1; ?>
-	var d2 =[
-	<?php foreach ($impressions_line as $line_plot) {
-		if ($y < $impressions_count ) {
-			echo '[' . $line_plot[0] . ',' . $line_plot[2] . '],';
-			$y++;
-		} else {
-			echo '[' . $line_plot[0] . ',' . $line_plot[2] . ']';
-		}
-	} ?>
-
-	];
-
-//       var d2 =[ [1, 463],
-//                 [2, 578],
-//                 [3, 327],
-//                 [4, 984],
-//                 [5, 1268],
-//                 [6, 1684],
-//                 [7, 1425],
-//                 [8, 1233],
-//                 [9, 1354],
-//                 [10, 1200],
-//                 [11, 1260],
-//                 [12, 1320]
-//       ];
-
-		var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-	  // flot chart generate
-       var plot = $.plotAnimator($("#statistics-chart"),
-         [
-           {
-             label: 'Clicks',
-             data: d1,
-             lines: {lineWidth:3},
-             shadowSize:0,
-             color: '#ffffff'
-           },
-           { label: "Impressions",
-             data: d2,
-             animator: {steps: 99, duration: 500, start:200, direction: "right"},
-             lines: {
-               fill: .15,
-               lineWidth: 0
-             },
-             color:['#ffffff']
-           },{
-             label: 'Clicks',
-             data: d1,
-             points: { show: true, fill: true, radius:6,fillColor:"rgba(0,0,0,.5)",lineWidth:2 },
-             color: '#fff',
-             shadowSize:0
-           },
-           { label: "Impresssions",
-             data: d2,
-             points: { show: true, fill: true, radius:6,fillColor:"rgba(255,255,255,.2)",lineWidth:2 },
-             color: '#fff',
-             shadowSize:0
-           }
-         ],{
-
-         xaxis: {
-
-           tickLength: 0,
-           tickDecimals: 0,
-           min:1,
-           ticks: [[1,"JAN"], [2, "FEB"], [3, "MAR"], [4, "APR"], [5, "MAY"], [6, "JUN"], [7, "JUL"], [8, "AUG"], [9, "SEP"], [10, "OCT"], [11, "NOV"], [12, "DEC"]],
-
-           font :{
-             lineHeight: 24,
-             weight: "300",
-             color: "#ffffff",
-             size: 14
-           }
-         },
-
-         yaxis: {
-			 ticks: 4,
-			 tickDecimals: 0,
-           tickColor: "rgba(255,255,255,.3)",
-
-           font :{
-             lineHeight: 13,
-             weight: "300",
-             color: "#ffffff"
-           }
-         },
-
-         grid: {
-           borderWidth: {
-             top: 0,
-             right: 0,
-             bottom: 1,
-             left: 1
-           },
-           borderColor: 'rgba(255,255,255,.3)',
-           margin:0,
-           minBorderMargin:0,
-           labelMargin:20,
-           hoverable: true,
-           clickable: true,
-           mouseActiveRadius:6
-         },
-
-         legend: { show: false}
-       });
-
-       $(window).resize(function() {
-         // redraw the graph in the correctly sized div
-         plot.resize();
-         plot.setupGrid();
-         plot.draw();
-       });
-
-       $('#mmenu').on(
-         "opened.mm",
-         function()
-         {
-           // redraw the graph in the correctly sized div
-           plot.resize();
-           plot.setupGrid();
-           plot.draw();
-         }
-       );
-
-       $('#mmenu').on(
-         "closed.mm",
-         function()
-         {
-           // redraw the graph in the correctly sized div
-           plot.resize();
-           plot.setupGrid();
-           plot.draw();
-         }
-       );
-
-       // tooltips showing
-       $("#statistics-chart").bind("plothover", function (event, pos, item) {
-         if (item) {
-           var x = item.datapoint[0],
-               y = item.datapoint[1];
-
-           $("#tooltip").html("<h1 style='color: #418bca'>" + months[x - 1] + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
-             .css({top: item.pageY-30, left: item.pageX+5})
-             .fadeIn(200);
-         } else {
-           $("#tooltip").hide();
-         }
-       });
-
-
-       //tooltips options
-       $("<div id='tooltip'></div>").css({
-         position: "absolute",
-         display: "none",
-         padding: "10px 20px",
-         "background-color": "#ffffff",
-         "z-index":"99999"
-       }).appendTo("body");
 </script>

@@ -12,8 +12,8 @@ class ControllerAccountAccount extends Controller {
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
-		$this->document->addStyle('catalog/view/theme/default/css/clientStyles.css');
 		$this->document->addStyle('catalog/view/theme/default/css/minimal-update.css');
+		$this->document->addStyle('catalog/view/theme/default/css/clientStyles.css');
 
 		$this->data['breadcrumbs'] = array();
 
@@ -58,6 +58,7 @@ class ControllerAccountAccount extends Controller {
 		$this->data['bing'] = $this->url->link('account/bing', '', 'SSL');
 		$this->data['newsletter'] = $this->url->link('account/newsletter', '', 'SSL');
 
+		
 
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/account/account.tpl')) {
 			$this->template = $this->config->get('config_template') . '/template/account/account.tpl';

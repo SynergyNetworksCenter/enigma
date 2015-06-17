@@ -135,15 +135,29 @@ class ModelAccountMember extends Model {
 	}
 
 	public function getMember($member_id) {
-		$query = $this->db->query("SELECT m.*, mw.website_id, w.site_name, a.analytics_id, b.bing_id
+		$query = $this->db->query("SELECT m.*, mw.website_id, w.site_name, a.analytics_id, ad.adwords_id, b.bing_id
 			FROM " . DB_PREFIX . "member m
 			LEFT JOIN sn_member_to_website mw ON (m.member_id = mw.member_id)
 			LEFT JOIN sn_websites w ON (mw.website_id = w.website_id)
 			LEFT JOIN sn_analytics a ON (mw.website_id = a.website_id)
+			LEFT JOIN sn_adwords ad ON (mw.website_id = ad.website_id)
 			LEFT JOIN sn_bing b ON (mw.website_id = b.website_id)
 			WHERE m.member_id = '" . (int)$member_id . "'");
 
 		return $query->row;
+	}
+
+	public function getMemberInfo($member_id) {
+		$query = $this->db->query("SELECT m.*, mw.website_id, w.site_name, a.analytics_id, ad.adwords_id, b.bing_id
+			FROM " . DB_PREFIX . "member m
+			LEFT JOIN sn_member_to_website mw ON (m.member_id = mw.member_id)
+			LEFT JOIN sn_websites w ON (mw.website_id = w.website_id)
+			LEFT JOIN sn_analytics a ON (mw.website_id = a.website_id)
+			LEFT JOIN sn_adwords ad ON (mw.website_id = ad.website_id)
+			LEFT JOIN sn_bing b ON (mw.website_id = b.website_id)
+			WHERE m.member_id = '" . (int)$member_id . "'");
+
+		return $query->rows;
 	}
 
 	public function getMemberByEmail($email) {
@@ -243,6 +257,10 @@ class ModelAccountMember extends Model {
 
 		return $query->rows;
 	}
+
+	// public function getMemberSitesAnalytics($member_id) {
+	// 	$query = $this->db->query("Select")
+	// }
 
 	public function getTotalMembersByEmail($email) {
 		$query = $this->db->query("SELECT COUNT(*) AS total

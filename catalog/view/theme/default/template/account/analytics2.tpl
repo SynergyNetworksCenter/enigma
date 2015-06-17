@@ -1,52 +1,63 @@
 <?php echo $header; ?>
-<?php echo $navigation; ?>
-
-
-	<?php //var_dump($timeline); ?>
-	<?php //var_dump($test); ?>
-
 
 <div class="jumbotron-bg">
-  <div class="jumbotron container" style="margin-bottom:0px;">
+	<?php echo $navigation; ?>
+  <div class="jumbotron container">
       <h1><?php echo $intro; ?></h1>
-      <p>Check out Your Google Analytics Below</p>
+      <p><?php echo $tagline; ?></p>
   </div>
 </div><!-- end of jumbotron-bg -->
 
 <!-- Date Range Row -->
-		<div id="date-range" class="row">
-			<div class="col-md-12">
-				<div class="container">
-
-					<form id="date-range" class="form-inline" action="<?php echo $action; ?>" method="POST">
-					  <div class="form-group">
-					    <label for="datepicker">Start Date: </label>
-					     <input type="text" name="startDate" class="form-control" id="datepicker"/>
-					  </div>
-					  <div class="form-group">
-					    <label for="datepicker2">End Date: </label>
-					     <input type="text" name="endDate" class="form-control" id="datepicker2"/>
-					  </div>
-					  <button type="submit" class="btn btn-default">Submit</button>
-					</form>
-
-				</div>
+	<div class="container-fluid">
+		<div id="split-divider" class="row">
+			<div class="col-md-6 text-left">
+        <form id="site-choose" class="form-inline" action="<?php echo $action_site_select; ?>" method="post">
+				  <div class="form-group">
+				    <label for="analytics_select">Site: </label>
+				     <select name="analytics_id" id="analytics-select">
+				     	<?php foreach ($websites as $site){ ?>
+				     		<?php if($site['analytics_id'] == $analytics_id) {?>
+									<option value="<?php echo $site['analytics_id']; ?>" selected><?php echo $site['site_name']; ?></option>
+								<?php } else {?>
+									<option value="<?php echo $site['analytics_id']; ?>"><?php echo $site['site_name']; ?></option>
+								<?php } ?>
+				     	<?php } ?>
+				     </select>
+				  </div>
+				  <button type="submit" class="btn btn-default btn-xs">Submit</button>
+				</form>
+      </div>
+			<div class="col-md-6 text-right">
+				<form id="date-choose" class="form-inline" action="<?php echo $action_date_select; ?>" method="post">
+				  <div class="form-group">
+				    <label for="datepicker">Start Date: </label>
+				     <input type="text" name="startDate" value="<?php echo date('m/d/Y', strtotime($startDate)); ?>" class="form-control input-sm" id="datepicker"/>
+				  </div>
+				  <div class="form-group">
+				    <label for="datepicker2">End Date: </label>
+				     <input type="text" name="endDate" value="<?php echo date('m/d/Y', strtotime($endDate)); ?>" class="form-control input-sm" id="datepicker2"/>
+				  </div>
+				  	<input type="hidden" name="analytics_id" value="<?php echo $analytics_id; ?>"/>
+				  <button type="submit" class="btn btn-default btn-xs">Submit</button>
+				</form>
 			</div>
 		</div> <!-- row -->
+	</div>
 
 <div class="container-fluid" style="margin-top:15px;">
-<!-- Sessions vs Pageviews Timeline Row -->
 	<div class="row">
-		<div class="col-lg-12">
+		<div id="displaying" class="col-md-12 displayDate text-left">
+      Showing Results For: <?php echo date('F j, Y',strtotime($startDate)); ?> - <?php echo date('F j, Y',strtotime($endDate)); ?>
+    </div>
+	</div>
+	<!-- Sessions vs Pageviews Timeline Row -->
+	<div class="row">
+		<div class="col-md-12">
 			<section class="tile transparent">
         <!-- tile header -->
         <div class="tile-header color transparent-black textured rounded-top-corners">
-          <h1><strong>Sessions Vs</strong> Page Views</h1>
-         	<div class="controls">
-           	<a href="#" class="minimize"><i class="fa fa-chevron-down"></i></a>
-           	<a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
-           	<a href="#" class="remove"><i class="fa fa-times"></i></a>
-         	</div>
+          <h1><strong>Sessions Vs</strong> Pageviews</h1>
         </div>
         <!-- /tile header -->
 
@@ -59,15 +70,15 @@
 		</div>
 	</div>
 
-<!-- Metrics Cards Row -->
+	<!-- Metrics Cards Row -->
 	<div class="row cards">
-	<!-- Sessions -->
-		<div class="card-container col-lg-2 col-sm-4 col-sm-6">
+		<!-- Sessions -->
+		<div class="card-container col-md-2 col-sm-4 col-xs-6">
 	    <div class="card card-redbrown hover">
 	      <div class="front">
 	        <div class="media">
 	          <span class="pull-left">
-	            <i class="fa fa-users media-object"></i>
+	            <i class="hidden-xs fa fa-users media-object"></i>
 	          </span>
 
 	          <div class="media-body">
@@ -75,233 +86,101 @@
 	            <h2 class="media-heading animate-number" data-value="<?php echo $flip_cards['ga:sessions']; ?>" data-animation-duration="1500">0</h2>
 	          </div>
 	        </div>
-
-	        <!-- <div class="progress-list">
-	          <div class="details">
-	            <div class="title">Precentage Over Previous Period</div>
-	          </div>
-	          <div class="status pull-right bg-transparent-black-1">
-	            <span class="animate-number" data-value="83" data-animation-duration="1500">0</span>%
-	          </div>
-	          <div class="clearfix"></div>
-	          <div class="progress progress-little progress-transparent-black">
-	            <div class="progress-bar animate-progress-bar" data-percentage="83%"></div>
-	          </div>
-	        </div> -->
 	      </div> <!-- end of front -->
-	      <div class="back">
-	        <a href="#">
-	          <i class="fa fa-bar-chart-o fa-4x"></i>
-	          <span>Check Summary</span>
-	        </a>
-	      </div> <!-- end of back -->
 	    </div> <!-- end of card-redbrown hover -->
 	  </div> <!-- end of card-container -->
-	<!-- Sessions Per User -->
-	  <div class="card-container col-lg-2 col-sm-4 col-sm-6">
+
+		<!-- Sessions Per User -->
+	  <div class="card-container col-md-2 col-sm-4 col-xs-6">
 	    <div class="card card-blue hover">
 	      <div class="front">
 	        <div class="media">
 	          <span class="pull-left">
-	            <i class="fa fa-users media-object"></i>
+	            <i class="hidden-xs fa fa-users media-object"></i>
 	          </span>
-
 	          <div class="media-body">
 	            <small>Sessions Per User</small>
 	            <h2 class="media-heading animate-number" data-value="<?php echo round($flip_cards['ga:sessionsPerUser'],2); ?>" data-animation-duration="1500">0</h2>
 	          </div>
 	        </div>
-
-	        <!-- <div class="progress-list">
-	          <div class="details">
-	            <div class="title">This month plan %</div>
-	          </div>
-	          <div class="status pull-right bg-transparent-black-1">
-	            <span class="animate-number" data-value="83" data-animation-duration="1500">0</span>%
-	          </div>
-	          <div class="clearfix"></div>
-	          <div class="progress progress-little progress-transparent-black">
-	            <div class="progress-bar animate-progress-bar" data-percentage="83%"></div>
-	          </div>
-	        </div> -->
 	      </div> <!-- end of front -->
-	      <div class="back">
-	        <a href="#">
-	          <i class="fa fa-bar-chart-o fa-4x"></i>
-	          <span>Check Summary</span>
-	        </a>
-	      </div> <!-- end of back -->
 	    </div> <!-- end of card-redbrown hover -->
 	  </div> <!-- end of card-container -->
-	<!-- Pageviews -->
-		<div class="card-container col-lg-2 col-sm-4 col-sm-6">
+
+		<!-- Pageviews -->
+		<div class="card-container col-md-2 col-sm-4 col-xs-6">
 	    <div class="card card-greensea hover">
 	      <div class="front">
 	        <div class="media">
 	          <span class="pull-left">
-	            <i class="fa fa-eye media-object"></i>
+	            <i class="hidden-xs fa fa-eye media-object"></i>
 	          </span>
-
 	          <div class="media-body">
-	            <small>Page Views</small>
+	            <small>Pageviews</small>
 	            <h2 class="media-heading animate-number" data-value="<?php echo $flip_cards['ga:pageviews']; ?>" data-animation-duration="1500">0</h2>
 	          </div>
 	        </div>
-
-	        <!-- <div class="progress-list">
-	          <div class="details">
-	            <div class="title">This month plan %</div>
-	          </div>
-	          <div class="status pull-right bg-transparent-black-1">
-	            <span class="animate-number" data-value="83" data-animation-duration="1500">0</span>%
-	          </div>
-	          <div class="clearfix"></div>
-	          <div class="progress progress-little progress-transparent-black">
-	            <div class="progress-bar animate-progress-bar" data-percentage="83%"></div>
-	          </div>
-	        </div> -->
 	      </div> <!-- end of front -->
-	      <div class="back">
-	        <a href="#">
-	          <i class="fa fa-bar-chart-o fa-4x"></i>
-	          <span>Check Summary</span>
-	        </a>
-	      </div> <!-- end of back -->
 	    </div> <!-- end of card-redbrown hover -->
 	  </div> <!-- end of card-container -->
-	<!-- Avg. Time on Page -->
-	  <div class="card-container col-lg-2 col-sm-4 col-sm-6">
+
+		<!-- Avg. Time on Page -->
+	  <div class="card-container col-md-2 col-sm-4 col-xs-6">
 	    <div class="card card-slategray hover">
 	      <div class="front">
 	        <div class="media">
 	          <span class="pull-left">
-	            <i class="fa fa-clock-o media-object"></i>
+	            <i class="hidden-xs fa fa-clock-o media-object"></i>
 	          </span>
-
 	          <div class="media-body">
 	            <small>Avg. Time On Page</small>
 	            <h2 class="media-heading animate-number" data-value="<?php echo gmdate("H:i:s", $flip_cards['ga:avgTimeOnPage']); ?>" data-animation-duration="1500">0</h2>
 	          </div>
 	        </div>
-
-	        <!-- <div class="progress-list">
-	          <div class="details">
-	            <div class="title">This month plan %</div>
-	          </div>
-	          <div class="status pull-right bg-transparent-black-1">
-	            <span class="animate-number" data-value="83" data-animation-duration="1500">0</span>%
-	          </div>
-	          <div class="clearfix"></div>
-	          <div class="progress progress-little progress-transparent-black">
-	            <div class="progress-bar animate-progress-bar" data-percentage="83%"></div>
-	          </div>
-	        </div> -->
 	      </div> <!-- end of front -->
-	      <div class="back">
-	        <a href="#">
-	          <i class="fa fa-bar-chart-o fa-4x"></i>
-	          <span>Check Summary</span>
-	        </a>
-	      </div> <!-- end of back -->
 	    </div> <!-- end of card-redbrown hover -->
 	  </div> <!-- end of card-container -->
-	<!-- Organic Searches -->
-		<div class="card-container col-lg-2 col-sm-4 col-sm-6">
+
+		<!-- Organic Searches -->
+		<div class="card-container col-md-2 col-sm-4 col-xs-6">
 	    <div class="card card-greensea hover">
 	      <div class="front">
 	        <div class="media">
 	          <span class="pull-left">
-	            <i class="fa fa-search media-object"></i>
+	            <i class="hidden-xs fa fa-search media-object"></i>
 	          </span>
-
 	          <div class="media-body">
 	            <small>Organic Searches</small>
 	            <h2 class="media-heading animate-number" data-value="<?php echo $flip_cards2['ga:organicSearches']; ?>" data-animation-duration="1500">0</h2>
 	          </div>
 	        </div>
 	      </div> <!-- end of front -->
-	      <div class="back">
-	        <a href="#">
-	          <i class="fa fa-bar-chart-o fa-4x"></i>
-	          <span>Check Summary</span>
-	        </a>
-	      </div> <!-- end of back -->
 	    </div> <!-- end of card-redbrown hover -->
 	  </div> <!-- end of card-container -->
-	<!-- Total Events -->
-	  <!-- <div class="card-container col-lg-2 col-sm-4 col-sm-6">
-	    <div class="card card-slategray hover">
-	      <div class="front">
-	        <div class="media">
-	          <span class="pull-left">
-	            <i class="fa fa-search media-object"></i>
-	          </span>
-//space	          <div class="media-body">
-	            <small>Total Events</small>
-	            <h2 class="media-heading animate-number" data-value="<?php //echo $flip_cards2['ga:totalEvents']; ?>" data-animation-duration="1500">0</h2>
-	          </div>
-	        </div>
-	      </div>
-	      <div class="back">
-	        <a href="#">
-	          <i class="fa fa-bar-chart-o fa-4x"></i>
-	          <span>Check Summary</span>
-	        </a>
-	      </div>
-	    </div>
-	  </div> -->
 
-	<!-- Bounces -->
-	  <!-- <div class="card-container col-lg-2 col-sm-4 col-sm-6">
-	    <div class="card card-blue hover">
-	      <div class="front">
-	        <div class="media">
-	          <span class="pull-left">
-	            <i class="fa fa-search media-object"></i>
-	          </span>
-//space	          <div class="media-body">
-	            <small>Bounces</small>
-	            <h2 class="media-heading animate-number" data-value="<?php //echo $flip_cards2['ga:bounces']; ?>" data-animation-duration="1500">0</h2>
-	          </div>
-	        </div>
-	      </div>
-	      <div class="back">
-	        <a href="#">
-	          <i class="fa fa-bar-chart-o fa-4x"></i>
-	          <span>Check Summary</span>
-	        </a>
-	      </div>
-	    </div>
-	  </div>  -->
-
-	<!-- Unique Pageviews -->
-	  <div class="card-container col-lg-2 col-sm-4 col-sm-6">
+		<!-- Unique Pageviews -->
+	  <div class="card-container col-md-2 col-sm-4 col-xs-6">
 	    <div class="card card-redbrown hover">
 	      <div class="front">
 	        <div class="media">
 	          <span class="pull-left">
-	            <i class="fa fa-search media-object"></i>
+	            <i class="hidden-xs fa fa-search media-object"></i>
 	          </span>
-
 	          <div class="media-body">
 	            <small>Unique Page Views</small>
 	            <h2 class="media-heading animate-number" data-value="<?php echo $flip_cards2['ga:uniquePageviews']; ?>" data-animation-duration="1500">0</h2>
 	          </div>
 	        </div>
 	      </div> <!-- end of front -->
-	      <div class="back">
-	        <a href="#">
-	          <i class="fa fa-bar-chart-o fa-4x"></i>
-	          <span>Check Summary</span>
-	        </a>
-	      </div> <!-- end of back -->
 	    </div> <!-- end of card-redbrown hover -->
 	  </div> <!-- end of card-container -->
 	</div> <!-- end card row -->
 
-<!-- Actual Statistics Row -->
+
+
 	<div class="row">
-		<div class="col-lg-12 col-sm-12 col-sm-12">
+		<!-- Actual Statistics Row -->
+		<div class="col-md-8 col-sm-8 col-xs-12">
 			<section class="tile transparent">
         <!-- tile body -->
         <div class="tile-body color transparent-white rounded-bottom-corners">
@@ -315,7 +194,7 @@
 		            <div class="inner-container inline">
 		              <div data-percent="100" data-size="140" class="pie-chart inline" data-scale-color="false" data-track-color="rgba(0,0,0,0)" data-bar-color="#ffffff" data-line-width="5">
 		                <div class="text-center">
-		                  <i class="fa fa-user fa-4x"></i>
+		                  <i class=" fa fa-user fa-4x"></i>
 		                </div>
 		              </div>
 		              <p class="chart-overall text-center medium-thin uppercase"><span class="big-medium animate-number" data-value="<?php echo $visitor_stats['ga:users']; ?>" data-animation-duration="2500">0</span> Users</p>
@@ -324,7 +203,7 @@
 		            <div class="inner-container inline">
 		              <div data-percent="85" data-size="140" class="pie-chart inline" data-scale-color="false" data-track-color="rgba(0,0,0,0)" data-bar-color="rgba(0,0,0,.4)" data-line-width="5">
 		                <div class="text-center">
-		                  <span><i class="fa fa-users fa-4x color-transparent-black"></i></span>
+		                  <span><i class=" fa fa-users fa-4x color-transparent-black"></i></span>
 		                </div>
 		              </div>
 		              <p class="chart-overall text-center medium-thin uppercase color-transparent-black"><span class="big-medium animate-number" data-value="<?php echo $visitor_stats['ga:newUsers']; ?>" data-animation-duration="2500">0</span> New Users</p>
@@ -357,107 +236,9 @@
         <!-- /tile body -->
       </section>
 		</div>
-	</div>
 
-<!-- Pie Charts Row -->
-	<div class="row">
-	<!-- Visits By Traffic Type Pie -->
-		<div class="col-lg-4 col-sm-4 col-sm-12">
-			<!-- tile -->
-			<section class="tile color transparent-black">
-        <!-- tile header -->
-        <div class="tile-header">
-          <h4 class="underline"><strong>Visits</strong> By Traffic Type</h4>
-          <div class="controls">
-            <a href="#" class="minimize"><i class="fa fa-chevron-down"></i></a>
-            <a href="#" class="remove"><i class="fa fa-times"></i></a>
-          </div>
-        </div>
-        <!-- /tile header -->
-
-        <!-- tile body -->
-        <div class="tile-body">
-          <div id="visits-by-traffic" style="height: 230px;" class="morris-chart"></div>
-          <ul class="inline text-center chart-legend">
-						<?php $color_count = 0; ?>
-          	<?php foreach ($visitsByTraffic_stats['visits'] as $visit) { ?>
-							<li><span class="badge badge-outline" style="border-color: <?php echo $visitsByTraffic_stats['colors'][$color_count]; ?>"></span> <?php echo $visit[0]; ?> <small><?php echo round(($visit[1]/$totalSessions)*100); ?>%</small></li>
-							<?php $color_count++; ?>
-						<?php } ?>
-          </ul>
-        </div>
-        <!-- /tile body -->
-      </section>
-      <!-- /tile -->
-		</div>
-<!-- New vs Returning Visitors -->
-		<div class="col-lg-4 col-sm-4 col-sm-12">
-			<section class="tile color transparent-black">
-        <!-- tile header -->
-        <div class="tile-header">
-          <h4 class="underline"><strong>New Vs Returning</strong> Visitors</h4>
-          <div class="controls">
-            <a href="#" class="minimize"><i class="fa fa-chevron-down"></i></a>
-            <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
-            <a href="#" class="remove"><i class="fa fa-times"></i></a>
-          </div>
-        </div>
-        <!-- /tile header -->
-
-        <!-- tile body -->
-        <div class="tile-body">
-          <div id="visits-by-visitor" style="height: 230px;" class="morris-chart"></div>
-          <ul class="inline text-center chart-legend">
-
-							<?php $color_count = 0; ?>
-          		<?php foreach ($visitsByVisitor_stats['visits'] as $visit) { ?>
-								<li><span class="badge badge-outline" style="border-color: <?php echo $visitsByVisitor_stats['colors'][$color_count]; ?>"></span> <?php echo $visit[0]; ?> <small><?php echo round(($visit[1]/$totalSessions)*100); ?>%</small></li>
-								<?php $color_count++; ?>
-							<?php } ?>
-
-
-          </ul>
-        </div>
-        <!-- /tile body -->
-      </section>
-		</div>
-
-		<div class="col-md-4">
-			<section class="tile color transparent-black">
-        <!-- tile header -->
-        <div class="tile-header">
-          <h4 class="underline"><strong>Sessions By</strong> Browser</h4>
-          <div class="controls">
-            <a href="#" class="minimize"><i class="fa fa-chevron-down"></i></a>
-            <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
-            <a href="#" class="remove"><i class="fa fa-times"></i></a>
-          </div>
-        </div>
-        <!-- /tile header -->
-
-        <!-- tile body -->
-        <div class="tile-body">
-          <div id="browser-usage" style="height: 230px;" class="morris-chart"></div>
-          <ul class="inline text-center chart-legend">
-          	<?php $color_count = 0; ?>
-          	<?php foreach ($browser_stats['browsers'] as $browser) { ?>
-							<li><span class="badge badge-outline" style="border-color: <?php echo $browser_stats['colors'][$color_count]; ?>"></span> <?php echo $browser[0]; ?> <small><?php echo round(($browser[1]/$totalSessions)*100); ?>%</small></li>
-						<?php $color_count++; ?>
-          	<?php } ?>
-          		<li><span class="badge badge-outline" style="border-color: #1693A5"></span> Other <small><?php echo $browser_stats['others']; ?>%</small></li>
-
-            <!-- <li><span class="badge badge-outline" style="border-color: #1693A5"></span> Other <small>25%</small></li>
-            <li><span class="badge badge-outline" style="border-color: #2fbbe8"></span> Safari <small>20%</small></li>
-            <li><span class="badge badge-outline" style="border-color: #72cae7"></span> Firefox <small>15%</small></li>
-            <li><span class="badge badge-outline" style="border-color: #ffc100"></span> Internet Explorer <small>10%</small></li>
-            <li><span class="badge badge-outline" style="border-color: #d9544f"></span> Opera <small>5%</small></li> -->
-          </ul>
-        </div>
-        <!-- /tile body -->
-      </section>
-		</div>
-
-		<div class="col-md-4">
+		<!-- Device Categories -->
+		<div class="col-md-4 col-sm-4 col-xs-12">
 			<section class="tile color transparent-black">
         <!-- tile header -->
         <div class="tile-header">
@@ -480,65 +261,45 @@
         <!-- /tile body -->
       </section>
 		</div>
-	</div> <!-- end of row -->
 
-  <!-- <div class="row cards">
-		<div class="card-container col-lg-3 col-sm-6 col-sm-12">
-	    <div class="card card-greensea hover">
-	      <div class="front">
-	        <div class="media">
-	          <span class="pull-left">
-	            <i class="fa fa-search media-object"></i>
-	          </span>
+	</div>
 
-	          <div class="media-body">
-	            <small>Bounce Rate</small>
-	            <h2 class="media-heading animate-number" data-value="<?php //echo round($flip_cards3['ga:bounceRate']); ?>%" data-animation-duration="1500">0</h2>
-	          </div>
-	        </div>
-	      </div> <!-- end of front -->
-	      <!-- <div class="back">
-	        <a href="#">
-	          <i class="fa fa-bar-chart-o fa-4x"></i>
-	          <span>Check Summary</span>
-	        </a>
-	      </div> <!-- end of back -->
-	    <!-- </div>  --><!-- end of card-redbrown hover -->
-	  <!-- </div> --> <!-- end of card-container -->
+	<!-- Pie Charts Row -->
+	<div class="row">
+		<!-- Sessions By Browser -->
+		<div class="col-md-4 col-sm-4 col-xs-12">
+			<section class="tile color transparent-black">
+        <!-- tile header -->
+        <div class="tile-header">
+          <h4 class="underline"><strong>Sessions By</strong> Browser</h4>
+        </div>
+        <!-- /tile header -->
 
-	  <!-- <div class="card-container col-lg-3 col-sm-6 col-sm-12">
-	    <div class="card card-slategray hover">
-	      <div class="front">
-	        <div class="media">
-	          <span class="pull-left">
-	            <i class="fa fa-search media-object"></i>
-	          </span>
+        <!-- tile body -->
+        <div class="tile-body">
+          <div id="browser-usage" style="height: 230px;" class="morris-chart"></div>
+          <ul class="inline text-center chart-legend">
+          	<?php $color_count = 0; ?>
+          	<?php foreach ($browser_stats['browsers'] as $browser) { ?>
+							<li><span class="badge badge-outline" style="border-color: <?php echo $browser_stats['colors'][$color_count]; ?>"></span> <?php echo $browser[0]; ?> <small><?php echo round(($browser[1]/$totalSessions)*100); ?>%</small></li>
+						<?php $color_count++; ?>
+          	<?php } ?>
+          		<li><span class="badge badge-outline" style="border-color: #1693A5"></span> Other <small><?php echo $browser_stats['others']; ?>%</small></li>
+          </ul>
+        </div>
+        <!-- /tile body -->
+      </section>
+		</div>
 
-	          <div class="media-body">
-	            <small class="underline">Sessions Per User</small>
-	            <h2 class="media-heading animate-number" data-value="<?php //echo round($flip_cards3['ga:sessionsPerUser'],1); ?>" data-animation-duration="1500">0</h2>
-	          </div>
-	        </div>
-	      </div>
-	      <div class="back">
-	        <a href="#">
-	          <i class="fa fa-bar-chart-o fa-4x"></i>
-	          <span>Check Summary</span>
-	        </a>
-	      </div> <!-- end of back -->
-	    <!-- </div> --> <!-- end of card-redbrown hover -->
-	  <!-- </div> --> <!-- end of card-container -->
-	<!-- </div>  -->
-
-	<div class="row data_tables">
-		<div class="col-lg-6 col-sm-12">
+		<!-- Top Pages -->
+		<div class="col-md-8 col-sm-8 col-xs-12">
 			<section class="tile color transparent-black btop-green">
 			  <div class="tile-header">
 			    <h4 class="underline"><i class="fa fa-globe"></i> Top Pages</h4>
 			  </div> <!-- end of tile-header -->
 
 			  <div class="tile-body">
-			    <div class="table-responsive">
+			    <div class="">
 			      <table class="table table-datatable table-custom table-striped" id="top-pages">
 			        <thead>
 			          <tr>
@@ -568,14 +329,19 @@
 			</section> <!-- end of section -->
 		</div>
 
-		<div class="col-lg-6 col-sm-12">
+	</div> <!-- end of row -->
+
+	<!-- Data Tables Section -->
+	<div class="row data_tables">
+		<!-- Visits by City -->
+		<div class="col-md-8 col-sm-8 col-xs-12">
 			<section class="tile color transparent-black btop-green">
 			  <div class="tile-header">
 			    <h4 class="underline"><i class="fa fa-globe"></i> Visits by City</h4>
 			  </div> <!-- end of tile-header -->
 
 			  <div class="tile-body">
-			    <div class="table-responsive">
+			    <div class="">
 			      <table class="table table-datatable table-custom table-striped" id="city-visits">
 			        <thead>
 			          <tr>
@@ -606,17 +372,109 @@
 			  </div> <!-- end of tile-body -->
 			</section> <!-- end of section -->
 		</div>
+
+		<!-- Visits By Channels -->
+		<div class="col-md-4 col-sm-4 col-xs-12">
+			<!-- tile -->
+			<section class="tile color transparent-black">
+        <!-- tile header -->
+        <div class="tile-header">
+          <h4 class="underline"><strong>Visits</strong> By Channels</h4>
+        </div>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <div class="tile-body">
+          <div id="visits-by-traffic" style="height: 230px;" class="morris-chart"></div>
+          <ul class="inline text-center chart-legend">
+						<?php $color_count = 0; ?>
+          	<?php foreach ($visitsByTraffic_stats['visits'] as $visit) { ?>
+							<li><span class="badge badge-outline" style="border-color: <?php echo $visitsByTraffic_stats['colors'][$color_count]; ?>"></span> <?php echo $visit[0]; ?> <small><?php echo round(($visit[1]/$totalSessions)*100); ?>%</small></li>
+							<?php $color_count++; ?>
+						<?php } ?>
+          </ul>
+        </div>
+        <!-- /tile body -->
+      </section>
+      <!-- /tile -->
+		</div>
 	</div>
 
 	<div class="row data_tables">
-		<div class="col-lg-6 col-sm-12">
+		<!-- New vs Returning Visitors -->
+		<div class="col-md-4 col-sm-4 col-xs-12">
+			<section class="tile color transparent-black">
+        <!-- tile header -->
+        <div class="tile-header">
+          <h4 class="underline"><strong>New Vs Returning</strong> Visitors</h4>
+        </div>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <div class="tile-body">
+          <div id="visits-by-visitor" style="height: 230px;" class="morris-chart"></div>
+          <ul class="inline text-center chart-legend">
+
+							<?php $color_count = 0; ?>
+          		<?php foreach ($visitsByVisitor_stats['visits'] as $visit) { ?>
+								<li><span class="badge badge-outline" style="border-color: <?php echo $visitsByVisitor_stats['colors'][$color_count]; ?>"></span> <?php echo $visit[0]; ?> <small><?php echo round(($visit[1]/$totalSessions)*100); ?>%</small></li>
+								<?php $color_count++; ?>
+							<?php } ?>
+
+
+          </ul>
+        </div>
+        <!-- /tile body -->
+      </section>
+		</div>
+
+		<!-- Organic Searches by Referrer -->
+		<div class="col-md-8 col-sm-8 col-xs-12">
+			<section class="tile color transparent-black btop-green">
+			  <div class="tile-header">
+			    <h4 class="underline"><i class="fa fa-globe"></i> Organic Searches By Referrer</h4>
+			  </div> <!-- end of tile-header -->
+
+			  <div class="tile-body">
+			    <div class="">
+			      <table class="table table-datatable table-custom table-striped" id="organic-referrer">
+			        <thead>
+			          <tr>
+			            <th class="sort-alpha">Referrer</th>
+			            <th class="sort-numeric">Organic Searches</th>
+			          </tr>
+			        </thead>
+			        <tbody>
+			          <?php if ($organicReferrer) { ?>
+			            <?php foreach ($organicReferrer as $referrer) { ?>
+			              <tr>
+			                <td><?php echo $referrer[0]; ?></td>
+			                <td><?php echo $referrer[1]; ?></td>
+			              </tr>
+			            <?php } ?>
+			          <?php } else { ?>
+			            <tr>
+			              <td class="text-center" colspan="2"><?php echo $text_no_results; ?></td>
+			            </tr>
+			          <?php } ?>
+			        </tbody>
+			      </table>
+			    </div> <!-- end of table-responsive -->
+			  </div> <!-- end of tile-body -->
+			</section> <!-- end of section -->
+		</div>
+	</div>
+
+	<div class="row data_tables">
+		<!-- Top Organic Searches -->
+		<div class="col-md-6 col-sm-12 col-xs-12">
 			<section class="tile color transparent-black btop-green">
 			  <div class="tile-header">
 			    <h4 class="underline"><i class="fa fa-globe"></i> Top Organic Searches</h4>
 			  </div> <!-- end of tile-header -->
 
 			  <div class="tile-body">
-			    <div class="table-responsive">
+			    <div class="">
 			      <table class="table table-datatable table-custom table-striped" id="organic-search">
 			        <thead>
 			          <tr>
@@ -644,14 +502,15 @@
 			</section> <!-- end of section -->
 		</div>
 
-		<div class="col-lg-6 col-sm-12">
+		<!-- Top Sources -->
+		<div class="col-md-6 col-sm-12 col-xs-12">
 			<section class="tile color transparent-black btop-green">
 			  <div class="tile-header">
 			    <h4 class="underline"><i class="fa fa-globe"></i> Top Sources</h4>
 			  </div> <!-- end of tile-header -->
 
 			  <div class="tile-body">
-			    <div class="table-responsive">
+			    <div class="">
 			      <table class="table table-datatable table-custom table-striped" id="sources">
 			        <thead>
 			          <tr>
@@ -681,14 +540,15 @@
 	</div> <!-- end of row -->
 
 	<div class="row data_tables">
-		<div class="col-lg-6 col-sm-12">
+		<!-- Top Referrals -->
+		<div class="col-md-6 col-sm-12 col-xs-12">
 			<section class="tile color transparent-black btop-green">
 			  <div class="tile-header">
 			    <h4 class="underline"><i class="fa fa-globe"></i> Top Referrals</h4>
 			  </div> <!-- end of tile-header -->
 
 			  <div class="tile-body">
-			    <div class="table-responsive">
+			    <div class="">
 			      <table class="table table-datatable table-custom table-striped" id="referrals">
 			        <thead>
 			          <tr>
@@ -716,14 +576,15 @@
 			</section> <!-- end of section -->
 		</div>
 
-		<div class="col-lg-6 col-sm-12">
+		<!-- Mobile Devices Used -->
+		<div class="col-md-6 col-sm-12 col-xs-12">
 			<section class="tile color transparent-black btop-green">
 			  <div class="tile-header">
-			    <h4 class="underline"><i class="fa fa-globe"></i> Devices Used</h4>
+			    <h4 class="underline"><i class="fa fa-globe"></i> Mobile Devices Used</h4>
 			  </div> <!-- end of tile-header -->
 
 			  <div class="tile-body">
-			    <div class="table-responsive">
+			    <div class="">
 			      <table class="table table-datatable table-custom table-striped" id="devices-used">
 			        <thead>
 			          <tr>
@@ -752,42 +613,6 @@
 		</div>
 	</div> <!-- end of row -->
 
-	<div class="row data_tables">
-		<div class="col-lg-6 col-sm-12">
-			<section class="tile color transparent-black btop-green">
-			  <div class="tile-header">
-			    <h4 class="underline"><i class="fa fa-globe"></i> Organic Searches By Referrer</h4>
-			  </div> <!-- end of tile-header -->
-
-			  <div class="tile-body">
-			    <div class="table-responsive">
-			      <table class="table table-datatable table-custom table-striped" id="organic-referrer">
-			        <thead>
-			          <tr>
-			            <th class="sort-alpha">Referrer</th>
-			            <th class="sort-numeric">Organic Searches</th>
-			          </tr>
-			        </thead>
-			        <tbody>
-			          <?php if ($organicReferrer) { ?>
-			            <?php foreach ($organicReferrer as $referrer) { ?>
-			              <tr>
-			                <td><?php echo $referrer[0]; ?></td>
-			                <td><?php echo $referrer[1]; ?></td>
-			              </tr>
-			            <?php } ?>
-			          <?php } else { ?>
-			            <tr>
-			              <td class="text-center" colspan="2"><?php echo $text_no_results; ?></td>
-			            </tr>
-			          <?php } ?>
-			        </tbody>
-			      </table>
-			    </div> <!-- end of table-responsive -->
-			  </div> <!-- end of tile-body -->
-			</section> <!-- end of section -->
-		</div>
-	</div>
 
 </div> <!-- end of container -->
 
@@ -819,6 +644,7 @@
       var oTable01 = $('#top-pages').dataTable({
       	'bFilter': false,
       	"iDisplayLength": 5,
+      	"aLengthMenu": [5,10],
         "sDom":
           "R<'row'<'col-md-6'l><'col-md-6'f>r>"+
           "t"+
@@ -840,6 +666,7 @@
       var oTable02 = $('#city-visits').dataTable({
       	'bFilter': false,
       	"iDisplayLength": 5,
+      	"aLengthMenu": [5,10],
         "sDom":
           "R<'row'<'col-md-6'l><'col-md-6'f>r>"+
           "t"+
@@ -862,6 +689,7 @@
       var oTable03 = $('#organic-search').dataTable({
       	'bFilter': false,
       	"iDisplayLength": 5,
+      	"aLengthMenu": [5,10],
         "sDom":
           "R<'row'<'col-md-6'l><'col-md-6'f>r>"+
           "t"+
@@ -882,6 +710,7 @@
       var oTable04 = $('#sources').dataTable({
       	'bFilter': false,
       	"iDisplayLength": 5,
+      	"aLengthMenu": [5,10],
         "sDom":
           "R<'row'<'col-md-6'l><'col-md-6'f>r>"+
           "t"+
@@ -902,6 +731,7 @@
       var oTable05 = $('#referrals').dataTable({
       	'bFilter': false,
       	"iDisplayLength": 5,
+      	"aLengthMenu": [5,10],
         "sDom":
           "R<'row'<'col-md-6'l><'col-md-6'f>r>"+
           "t"+
@@ -922,6 +752,7 @@
       var oTable06 = $('#devices-used').dataTable({
       	'bFilter': false,
       	"iDisplayLength": 5,
+      	"aLengthMenu": [5,10],
         "sDom":
           "R<'row'<'col-md-6'l><'col-md-6'f>r>"+
           "t"+
@@ -942,6 +773,7 @@
       var oTable07 = $('#organic-referrer').dataTable({
       	'bFilter': false,
       	"iDisplayLength": 5,
+      	"aLengthMenu": [5,10],
         "sDom":
           "R<'row'<'col-md-6'l><'col-md-6'f>r>"+
           "t"+
@@ -971,28 +803,8 @@
 </script>
 
 <script>
-      // Initialize card flip
-      // $('.card.hover').hover(function(){
-      //   $(this).addClass('flip');
-      // },function(){
-      //   $(this).removeClass('flip');
-      // });
-
-      // Make card front & back side same
-      $('.card').each(function() {
-        var front = $('.card .front');
-        var back = $('.card .back');
-        var frontH = front.height();
-        var backH = back.height();
-
-
-
-        if (backH > frontH) {
-          front.height(backH - 8);
-        }
-      });
-
-           // Initialize flot chart
+			// Clicks & Impressions
+      // Initialize flot chart
       var d1 =[
       			[1, 715],
             [2, 985],
@@ -1020,7 +832,7 @@
                 [11, 1260],
                 [12, 1320]
       ];
-      var months = ["January", "February", "March", "April", "May", "Juny", "July", "August", "September", "October", "November", "December"];
+      var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
       // flot chart generate
       var plot = $.plotAnimator($("#statistics-chart"),
@@ -1032,7 +844,7 @@
             shadowSize:0,
             color: '#ffffff'
           },
-          { label: "Page Views",
+          { label: "Pageviews",
             data: d2,
             animator: {steps: 99, duration: 500, start:200, direction: "right"},
             lines: {
@@ -1041,13 +853,13 @@
             },
             color:['#ffffff']
           },{
-            label: 'Sales',
+            label: 'Sessions',
             data: d1,
             points: { show: true, fill: true, radius:6,fillColor:"rgba(0,0,0,.5)",lineWidth:2 },
             color: '#fff',
             shadowSize:0
           },
-          { label: "Visits",
+          { label: "Pageviews",
             data: d2,
             points: { show: true, fill: true, radius:6,fillColor:"rgba(255,255,255,.2)",lineWidth:2 },
             color: '#fff',
@@ -1108,51 +920,51 @@
         plot.draw();
       });
 
-      $('#mmenu').on(
-        "opened.mm",
-        function()
-        {
-          // redraw the graph in the correctly sized div
-          plot.resize();
-          plot.setupGrid();
-          plot.draw();
-        }
-      );
+      // $('#mmenu').on(
+      //   "opened.mm",
+      //   function()
+      //   {
+      //     // redraw the graph in the correctly sized div
+      //     plot.resize();
+      //     plot.setupGrid();
+      //     plot.draw();
+      //   }
+      // );
 
-      $('#mmenu').on(
-        "closed.mm",
-        function()
-        {
-          // redraw the graph in the correctly sized div
-          plot.resize();
-          plot.setupGrid();
-          plot.draw();
-        }
-      );
+      // $('#mmenu').on(
+      //   "closed.mm",
+      //   function()
+      //   {
+      //     // redraw the graph in the correctly sized div
+      //     plot.resize();
+      //     plot.setupGrid();
+      //     plot.draw();
+      //   }
+      // );
 
-      // tooltips showing
-      $("#statistics-chart").bind("plothover", function (event, pos, item) {
-        if (item) {
-          var x = item.datapoint[0],
-              y = item.datapoint[1];
+      // // tooltips showing
+      // $("#statistics-chart").bind("plothover", function (event, pos, item) {
+      //   if (item) {
+      //     var x = item.datapoint[0],
+      //         y = item.datapoint[1];
 
-          $("#tooltip").html('<h1 style="color: #418bca">' + months[x - 1] + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
-            .css({top: item.pageY-30, left: item.pageX+5})
-            .fadeIn(200);
-        } else {
-          $("#tooltip").hide();
-        }
-      });
+      //     $("#tooltip").html('<h1 style="color: #418bca">' + months[x - 1] + '</h1>' + '<strong>' + y + '</strong>' + ' ' + item.series.label)
+      //       .css({top: item.pageY-30, left: item.pageX+5})
+      //       .fadeIn(200);
+      //   } else {
+      //     $("#tooltip").hide();
+      //   }
+      // });
 
 
-      //tooltips options
-      $("<div id='tooltip'></div>").css({
-        position: "absolute",
-        //display: "none",
-        padding: "10px 20px",
-        "background-color": "#ffffff",
-        "z-index":"99999"
-      }).appendTo("body");
+      // //tooltips options
+      // $("<div id='tooltip'></div>").css({
+      //   position: "absolute",
+      //   //display: "none",
+      //   padding: "10px 20px",
+      //   "background-color": "#ffffff",
+      //   "z-index":"99999"
+      // }).appendTo("body");
 
       //generate actual pie charts
       $('.pie-chart').easyPieChart();

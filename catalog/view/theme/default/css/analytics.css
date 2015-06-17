@@ -1,11 +1,46 @@
-#top-pages_wrapper > div.row, 
-#city-visits_wrapper > div.row, 
+html {
+    padding-top:0px;
+    overflow:initial !important;
+}
+
+.tile .tile-header {
+  padding: 4px 15px !important;
+  position: relative;
+}
+
+#split-divider {
+	background: rgb(171, 171, 171);
+	padding:5px 15px;
+}
+
+.card-container .card .front {
+  min-height: initial;
+}
+
+#date-range {
+	padding: 5px 15px;
+}
+
+.displayDate {
+	padding:10px;
+}
+
+.ui-datepicker {
+	z-index: 99 !important;
+}
+
+#top-pages_wrapper > div.row,
+#city-visits_wrapper > div.row,
 #organic-search_wrapper > div.row,
-#sources_wrapper > div.row, 
-#referrals_wrapper > div.row, 
-#devices-used_wrapper > div.row, 
+#sources_wrapper > div.row,
+#referrals_wrapper > div.row,
+#devices-used_wrapper > div.row,
 #organic-referrer_wrapper > div.row {
 	padding:0px 0px;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+  background-color: inherit !important;
 }
 
 .row.data_tables .tile .tile-header {
@@ -18,4 +53,43 @@ padding: 0px 15px 15px;
 
 .table.table-custom > tbody > tr > th, .table.table-custom > tbody > tr > td {
 	padding-left: 5px;
+}
+
+.jumbotron-bg {
+	background: url(http://www.snworks.com/images/hero.jpg);
+	/*background-size: 100% 100%;*/
+	box-shadow: 0px 5px 14px white;
+  border-bottom: thin solid white;
+
+}
+
+
+div.jumbotron.container {
+	background-color: transparent;
+    color: white;
+}
+
+div.jumbotron.container p {
+    color: white;
+    font-weight: 300;
+}
+
+.jumbotron {
+	margin-bottom:0px;
+}
+
+.navbar {
+	/*background-color: rgba(41, 158, 179, 0.99);*/
+	background-color: transparent;
+}
+
+.navbar-brand {
+	color:white !important;
+}
+.navbar-brand > strong {
+	color: rgb(234, 145, 58);
+}
+
+.links {
+	color: #fafafa !important;
 }

@@ -1,154 +1,182 @@
 <?php echo $header; ?>
-<?php echo $navigation; ?>
-
-<?php //print(round($ctr,2));?>
-<?php //var_dump($clicks);?>
-<?php //var_dump($impressions);?>
 
 <div class="jumbotron-bg">
-  <div class="jumbotron container" style="margin-bottom:0px;">
+  <?php echo $navigation; ?>
+  <div class="jumbotron container">
       <h1><?php echo $intro; ?></h1>
       <p><?php echo $tagline; ?></p>
       <p><a href="<?php echo $marketing; ?>" class="btn btn-primary" role="button">View Google Marketing</a></p>
   </div>
 </div><!-- end of jumbotron-bg -->
 
-<?php //var_dump($impressions); ?>
+<div class="container-fluid">
+    <div id="split-divider" class="row">
+      <div class="col-md-6 text-left">
+        <form id="site-choose" class="form-inline" action="<?php echo $action_site_select; ?>" method="POST">
+          <div class="form-group">
+            <label for="bing_select">Site: </label>
+             <select name="bing_id" id="bing-select">
+              <?php foreach ($websites as $site){ ?>
+                <?php if($site['bing_id'] == $bing_id) {?>
+                  <option value="<?php echo $site['bing_id']; ?>" selected><?php echo $site['site_name']; ?></option>
+                <?php } else {?>
+                  <option value="<?php echo $site['bing_id']; ?>"><?php echo $site['site_name']; ?></option>
+                <?php } ?>
+              <?php } ?>
+             </select>
+          </div>
+          <button type="submit" class="btn btn-default btn-xs">Submit</button>
+        </form>
+      </div>
+      <div class="col-md-6 text-right">
+        <form id="date-range" class="form-inline" action="<?php echo $action_date_select; ?>" method="POST">
+          <div class="form-group">
+            <label for="datepicker">Month:  </label>
+            <select name="startDate" id="startDate">
+            <?php if($avail_report_months) { ?>
+              <?php foreach ($avail_report_months as $date) { ?>
+                <?php if($date['month'] == $startDate) {?>
+                  <option value="<?php echo $date['month']; ?>" selected><?php echo $date['month']; ?></option>
+                <?php } else { ?>
+                  <option value="<?php echo $date['month']; ?>" ><?php echo $date['month']; ?></option>
+                <?php } ?>
+              <?php } ?>
+            <?php } else { ?>
+              <option value="#">No Reports Available</option>
+            <?php } ?>
+            </select>
 
-<div class="container">
-	<div class="row">
-		<div class="col-md-4">
-			<div class="row">
-
-				<!-- Clicks -->
-				<div class="card-container col-md-12">
-				  <div class="card card-redbrown hover">
-				    <div class="front">
-				      <div class="media">
-				        <span class="pull-left">
-				          <i class="fa fa-search media-object"></i>
-				        </span>
-
-				        <div class="media-body">
-				          <small>Clicks</small>
-				          <h2 class="media-heading animate-number" data-value="<?php echo $clicks; ?>" data-animation-duration="1500">0</h2>
-				        </div>
-				      </div>
-				    </div> <!-- end of front -->
-				    <div class="back">
-				      <a href="#">
-				        <i class="fa fa-bar-chart-o fa-4x"></i>
-				        <span>Check Summary</span>
-				      </a>
-				    </div> <!-- end of back -->
-				  </div> <!-- end of card-redbrown hover -->
-				</div> <!-- end of card-container -->
-				<!-- Clicks -->
-
-				<!-- Impressions -->
-				<div class="card-container col-md-12">
-				  <div class="card card-redbrown hover">
-				    <div class="front">
-				      <div class="media">
-				        <span class="pull-left">
-				          <i class="fa fa-search media-object"></i>
-				        </span>
-
-				        <div class="media-body">
-				          <small>Impressions</small>
-				          <h2 class="media-heading animate-number" data-value="<?php echo $impressions; ?>" data-animation-duration="1500">0</h2>
-				        </div>
-				      </div>
-				    </div> <!-- end of front -->
-				    <div class="back">
-				      <a href="#">
-				        <i class="fa fa-bar-chart-o fa-4x"></i>
-				        <span>Check Summary</span>
-				      </a>
-				    </div> <!-- end of back -->
-				  </div> <!-- end of card-redbrown hover -->
-				</div> <!-- end of card-container -->
-				<!-- Impressions -->
-
-        <!-- CTR -->
-				<div class="card-container col-md-12">
-				  <div class="card card-redbrown hover">
-				    <div class="front">
-				      <div class="media">
-				        <span class="pull-left">
-				          <i class="fa fa-search media-object"></i>
-				        </span>
-
-				        <div class="media-body">
-				          <small>Impressions</small>
-				          <h2 class="media-heading animate-number" data-value="<?php echo round($ctr,2)."%"; ?>" data-animation-duration="1500">%</h2>
-				        </div>
-				      </div>
-				    </div> <!-- end of front -->
-				    <div class="back">
-				      <a href="#">
-				        <i class="fa fa-bar-chart-o fa-4x"></i>
-				        <span>Check Summary</span>
-				      </a>
-				    </div> <!-- end of back -->
-				  </div> <!-- end of card-redbrown hover -->
-				</div> <!-- end of card-container -->
-				<!-- CTR -->
-
-			</div><!-- end row -->
-		</div><!-- end metric cards -->
-
-		<!-- Tables -->
-		<div class="col-md-8">
-			<div class="row">
-
-				<!-- Keywords -->
-				<div class="col-md-12">
-					<section class="tile color transparent-black btop-green">
-					  <div class="tile-header">
-					    <h4 class="underline"><i class="fa fa-globe"></i> Keywords</h4>
-					  </div> <!-- end of tile-header -->
-
-					  <div class="tile-body">
-					    <div class="table-responsive">
-					      <table class="table table-datatable table-custom table-striped" id="bing_id">
-					        <thead>
-					          <tr>
-					            <th class="sort-alpha">Keyword</th>
-					            <th class="sort-numeric">Clicks</th>
-					            <th class="sort-numeric">Impressions</th>
-					          </tr>
-					        </thead>
-					        <tbody>
-					          <?php if ($keywords) { ?>
-					            <?php foreach ($keywords as $keyword) { ?>
-					              <tr>
-					                <td><?php echo $keyword['keyword']; ?></td>
-                          <td><?php echo $keyword['clicks']; ?></td>
-                          <td><?php echo $keyword['impressions']; ?></td>
-					              </tr>
-					            <?php } ?>
-					          <?php } else { ?>
-					            <tr>
-					              <td class="text-center" colspan="3"><?php echo $text_no_results; ?></td>
-					            </tr>
-					          <?php } ?>
-					        </tbody>
-					      </table>
-					    </div> <!-- end of table-responsive -->
-					  </div> <!-- end of tile-body -->
-					</section> <!-- end of section -->
-				</div><!-- end of Keywords -->
-
-
-
-			</div>
-		</div><!-- end of Tables -->
-	</div> <!-- end of container row -->
+             <!-- <input type="text" name="startDate" class="form-control input-sm" placeholder="<?php echo date('F Y',strtotime($startDate)); ?>" id="datepicker"/> -->
+          </div>
+          <input type="hidden" name="bing_id" value="<?php echo $bing_id; ?>"/>
+          <button type="submit" class="btn btn-default btn-xs">Submit</button>
+        </form>
+      </div>
+    </div> <!-- row -->
+  </div>
 
 
 
 
+<div class="container-fluid" style="margin-top:15px;">
+  <div class="row">
+    <?php if($startDate) { ?>
+      <div id="displaying" class="col-md-12 displayDate text-left">
+        Showing Results For: <?php echo date('F Y',strtotime($startDate)); ?>
+      </div>
+    <?php } else { ?>
+      <div id="displaying" class="col-md-12 displayDate text-left">
+        Showing Results For:
+      </div>
+    <?php } ?>
+  </div>
+
+  <?php if(!isset($empty)) { ?>
+
+  	<div class="row">
+  		<!-- Clicks -->
+  		<div class="card-container col-md-4 col-sm-4">
+  		  <div class="card card-redbrown hover">
+  		    <div class="front">
+  		      <div class="media">
+  		        <span class="pull-left">
+  		          <i class="fa fa-search media-object"></i>
+  		        </span>
+
+  		        <div class="media-body">
+  		          <small>Clicks</small>
+  		          <h2 class="media-heading animate-number" data-value="<?php echo $clicks; ?>" data-animation-duration="1500">0</h2>
+  		        </div>
+  		      </div>
+  		    </div> <!-- end of front -->
+  		  </div> <!-- end of card-redbrown hover -->
+  		</div> <!-- end of card-container -->
+  		<!-- Clicks -->
+
+  		<!-- Impressions -->
+  		<div class="card-container col-md-4 col-sm-4">
+  		  <div class="card card-redbrown hover">
+  		    <div class="front">
+  		      <div class="media">
+  		        <span class="pull-left">
+  		          <i class="fa fa-search media-object"></i>
+  		        </span>
+
+  		        <div class="media-body">
+  		          <small>Impressions</small>
+  		          <h2 class="media-heading animate-number" data-value="<?php echo $impressions; ?>" data-animation-duration="1500">0</h2>
+  		        </div>
+  		      </div>
+  		    </div> <!-- end of front -->
+  		  </div> <!-- end of card-redbrown hover -->
+  		</div> <!-- end of card-container -->
+  		<!-- Impressions -->
+
+      <!-- CTR -->
+  		<div class="card-container col-md-4 col-sm-4">
+  		  <div class="card card-redbrown hover">
+  		    <div class="front">
+  		      <div class="media">
+  		        <span class="pull-left">
+  		          <i class="fa fa-search media-object"></i>
+  		        </span>
+  		        <div class="media-body">
+  		          <small>CTR</small>
+  		          <h2 class="media-heading animate-number" data-value="<?php echo round($ctr,2)."%"; ?>" data-animation-duration="1500">%</h2>
+  		        </div>
+  		      </div>
+  		    </div> <!-- end of front -->
+  		  </div> <!-- end of card-redbrown hover -->
+  		</div> <!-- end of card-container -->
+  		<!-- CTR -->
+    </div>
+
+    <div class="row">
+  		<!-- Keywords -->
+  		<div class="col-md-12 col-sm-12 col-x-12">
+  			<section class="tile color transparent-black btop-green">
+  			  <div class="tile-header">
+  			    <h4 class="underline"><i class="fa fa-globe"></i> Keywords</h4>
+  			  </div> <!-- end of tile-header -->
+
+  			  <div class="tile-body">
+  			    <div class="">
+  			      <table class="table table-datatable table-custom table-striped" id="keywords">
+  			        <thead>
+  			          <tr>
+  			            <th class="sort-alpha">Keyword</th>
+  			            <th class="sort-numeric">Clicks</th>
+  			            <th class="sort-numeric">Impressions</th>
+  			          </tr>
+  			        </thead>
+  			        <tbody>
+  			          <?php if ($keywords) { ?>
+  			            <?php foreach ($keywords as $keyword) { ?>
+  			              <tr>
+  			                <td><?php echo $keyword['keyword']; ?></td>
+                        <td><?php echo $keyword['clicks']; ?></td>
+                        <td><?php echo $keyword['impressions']; ?></td>
+  			              </tr>
+  			            <?php } ?>
+  			          <?php } else { ?>
+  			            <tr>
+  			              <td class="text-center" colspan="3"><?php echo $text_no_results; ?></td>
+  			            </tr>
+  			          <?php } ?>
+  			        </tbody>
+  			      </table>
+  			    </div> <!-- end of table-responsive -->
+  			  </div> <!-- end of tile-body -->
+  			</section> <!-- end of section -->
+  		</div><!-- end of Keywords -->
+  	</div><!-- end of Tables -->
+  <?php } else { ?>
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <p><?php echo $empty; ?></p>
+      </div>
+    </div>
+  <?php } ?>
 
 
 </div><!-- end of container -->
@@ -201,125 +229,6 @@
         }
       });
 
-      var oTable02 = $('#destinations').dataTable({
-      	'bFilter': false,
-        "sDom":
-          "R<'row'<'col-md-6'l><'col-md-6'f>r>"+
-          "t"+
-          "<'row'<'col-md-4 sm-center'i><'col-md-4'><'col-md-4 text-right sm-center'p>>",
-        "oLanguage": {
-          "sSearch": ""
-        },
-        "aaSorting": [ [1,'desc'] ],
-        "aoColumns": [
-          null,
-          null,
-          null
-        ],
-        "fnInitComplete": function(oSettings, json) {
-          console.log('complete');
-        }
-      });
-
-      var oTable03 = $('#bestkeywords').dataTable({
-      	'bFilter': false,
-        "sDom":
-          "R<'row'<'col-md-6'l><'col-md-6'f>r>"+
-          "t"+
-          "<'row'<'col-md-4 sm-center'i><'col-md-4'><'col-md-4 text-right sm-center'p>>",
-        "oLanguage": {
-          "sSearch": ""
-        },
-        "aaSorting": [ [1,'desc'] ],
-        "aoColumns": [
-          null,
-          null
-        ],
-        "fnInitComplete": function(oSettings, json) {
-          console.log('complete');
-        }
-      });
-
-      var oTable04 = $('#sources').dataTable({
-      	'bFilter': false,
-      	"iDisplayLength": 5,
-        "sDom":
-          "R<'row'<'col-md-6'l><'col-md-6'f>r>"+
-          "t"+
-          "<'row'<'col-md-4 sm-center'i><'col-md-4'><'col-md-4 text-right sm-center'p>>",
-        "oLanguage": {
-          "sSearch": ""
-        },
-        "aaSorting": [ [1,'desc'] ],
-        "aoColumns": [
-          null,
-          null
-        ],
-        "fnInitComplete": function(oSettings, json) {
-          console.log('complete');
-        }
-      });
-
-      var oTable05 = $('#referrals').dataTable({
-      	'bFilter': false,
-      	"iDisplayLength": 5,
-        "sDom":
-          "R<'row'<'col-md-6'l><'col-md-6'f>r>"+
-          "t"+
-          "<'row'<'col-md-4 sm-center'i><'col-md-4'><'col-md-4 text-right sm-center'p>>",
-        "oLanguage": {
-          "sSearch": ""
-        },
-        "aaSorting": [ [1,'desc'] ],
-        "aoColumns": [
-          null,
-          null
-        ],
-        "fnInitComplete": function(oSettings, json) {
-          console.log('complete');
-        }
-      });
-
-      var oTable06 = $('#devices-used').dataTable({
-      	'bFilter': false,
-      	"iDisplayLength": 5,
-        "sDom":
-          "R<'row'<'col-md-6'l><'col-md-6'f>r>"+
-          "t"+
-          "<'row'<'col-md-4 sm-center'i><'col-md-4'><'col-md-4 text-right sm-center'p>>",
-        "oLanguage": {
-          "sSearch": ""
-        },
-        "aaSorting": [ [1,'desc'] ],
-        "aoColumns": [
-          null,
-          null
-        ],
-        "fnInitComplete": function(oSettings, json) {
-          console.log('complete');
-        }
-      });
-
-      var oTable07 = $('#organic-referrer').dataTable({
-      	'bFilter': false,
-      	"iDisplayLength": 5,
-        "sDom":
-          "R<'row'<'col-md-6'l><'col-md-6'f>r>"+
-          "t"+
-          "<'row'<'col-md-4 sm-center'i><'col-md-4'><'col-md-4 text-right sm-center'p>>",
-        "oLanguage": {
-          "sSearch": ""
-        },
-        "aaSorting": [ [1,'desc'] ],
-        "aoColumns": [
-          null,
-          null
-        ],
-        "fnInitComplete": function(oSettings, json) {
-          console.log('complete');
-        }
-      });
-
       //initialize chosen
       $('.dataTables_length select').chosen({disable_search_threshold: 10});
 
@@ -328,5 +237,9 @@
       $('div.dataTables_length select').addClass('chosen-select');
       $('div.dataTables_length select').addClass('chosen-transparent');
 
-  })
+  });
+   $(function() {
+        $( "#datepicker" ).datepicker();
+        $( "#datepicker2" ).datepicker();
+      });
 </script>

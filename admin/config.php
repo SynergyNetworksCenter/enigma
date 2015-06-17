@@ -17,7 +17,6 @@ define('DIR_CONFIG', 'E:\inetpub\wwwroot\devsnworks\enigma/system/config/');
 define('DIR_IMAGE', 'E:\inetpub\wwwroot\devsnworks\enigma/image/');
 define('DIR_CACHE', 'E:\inetpub\wwwroot\devsnworks\enigma/system/cache/');
 define('DIR_DOWNLOAD', 'E:\inetpub\wwwroot\devsnworks\enigma/download/');
-define('DIR_UPLOAD', 'E:\inetpub\wwwroot\devsnworks\enigma/upload/');
 define('DIR_LOGS', 'E:\inetpub\wwwroot\devsnworks\enigma/system/logs/');
 define('DIR_CATALOG', 'E:\inetpub\wwwroot\devsnworks\enigma/catalog/');
 

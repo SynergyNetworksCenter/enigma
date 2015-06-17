@@ -1,40 +1,6 @@
 <?php
 class ModelAccountMarketing extends Model {
 
-	public function getService() {
-		require_once 'google-api-php-client/src/Google/autoload.php';
-		$service_account_email = '435077490050-cn4q93nb83ea759pdhkdll7iiga5cots@developer.gserviceaccount.com';
-		$key_file_location = 'API Project-a6d818c725ec.p12';
-
-		$client = new Google_Client();
-		$client->setApplicationName("Analytics PHP Test");
-		$analytics = new Google_Service_Analytics($client);
-
-		$key = file_get_contents($key_file_location);
-		$cred = new Google_Auth_AssertionCredentials(
-			$service_account_email,
-			array(Google_Service_Analytics::ANALYTICS_READONLY),
-			$key
-		);
-
-		$client->setAssertionCredentials($cred);
-		if($client->getAuth()->isAccessTokenExpired()) {
-			$client->getAuth()->refreshTokenWithAssertion($cred);
-		}
-
-		return $analytics;
-	}
-
-	public function getResults(&$analytics, $analytics_id, $startDate, $endDate, $query_data = array()) {
-		try {
-			$result = $analytics->data_ga->get($analytics_id, $startDate, $endDate, $query_data['metrics'], $query_data['params']);
-			return $result;
-		} catch(Exception $e) {
-			$error = $e->getMessage();
-			return $error;
-		}
-	}
-
 	private function testConnection() {
 		set_include_path(get_include_path() . PATH_SEPARATOR . 'google/src');
 		require_once 'google/src/Google/Client.php';
@@ -82,7 +48,7 @@ class ModelAccountMarketing extends Model {
 	public function getData($adwords_id) {
     $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "adwords a
     LEFT JOIN " . DB_PREFIX . "upload_test_manual utm ON (a.adwords_id = utm.customer_id)
-		WHERE utm.customer_id = '" . $adwords_id ."'");
+		WHERE utm.customer_id = '" .(int)$adwords_id ."'");
 
     return $query->row;
   }
@@ -90,15 +56,15 @@ class ModelAccountMarketing extends Model {
 	public function getPlacements($adwords_id) {
     $query = $this->db->query("SELECT placement, clicks, impressions FROM " . DB_PREFIX . "upload_test_manual utm
     LEFT JOIN " . DB_PREFIX . "adwords a ON (utm.customer_id = a.adwords_id)
-		WHERE utm.customer_id = '" . $adwords_id . "'");
+		WHERE utm.customer_id = '" . (int)$adwords_id . "'");
 
     return $query->rows;
   }
 
 	public function getDomains($adwords_id) {
-    $query = $this->db->query("SELECT domain, clicks, impressions FROM " . DB_PREFIX . "upload_test_automatic uta
-    LEFT JOIN " . DB_PREFIX . "adwords a ON (uta.customer_id = a.adwords_id)
-		WHERE uta.customer_id = '" . $adwords_id . "'");
+    $query = $this->db->query("SELECT placement, clicks, impressions FROM " . DB_PREFIX . "upload_test_manual utm
+    LEFT JOIN " . DB_PREFIX . "adwords a ON (utm.customer_id = a.adwords_id)
+		WHERE utm.customer_id = '" . (int)$adwords_id . "'");
 
     return $query->rows;
   }

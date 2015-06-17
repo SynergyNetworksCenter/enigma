@@ -30,6 +30,7 @@
 <?php } ?>
 
 <!-- CSS Stylesheets -->
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
 <link rel="stylesheet" href="catalog/view/theme/default/css/vendor/bootstrap/bootstrap.min.css" >
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
@@ -65,7 +66,7 @@
 
 <script type="text/javascript" src="catalog/view/theme/default/js/minimal.min.js"></script>
 
-<!--[if IE 7]> 
+<!--[if IE 7]>
 <link rel="stylesheet" type="text/css" href="catalog/view/theme/default/stylesheet/ie7.css" />
 <![endif]-->
 <!--[if lt IE 7]>
@@ -78,7 +79,3 @@ DD_belatedPNG.fix('#logo img');
 
 </head>
 <body class="bg-synergy">
-
-
-
-
